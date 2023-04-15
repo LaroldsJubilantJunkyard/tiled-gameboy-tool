@@ -1,0 +1,19 @@
+{
+  "name": "tiled-gameboy-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "npx tsc && pkg build/index.js --out-path ./dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nexe": "^4.0.0-rc.2",
+    "xml2json": "^0.12.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
+}
