@@ -32,6 +32,11 @@ export const readProcessArguments = ( executionData: ExecutionData) => {
         data: null,
         action: objectsFeature,
       });
+    }  else if (arg == "--object-struct-name") {
+
+      // add the object ield
+      executionData.objectStructName = process.argv[++i]
+  
     }  else if (arg == "--object-field") {
       // add the object ield
       executionData.objectFields.push({name:process.argv[++i],type:process.argv[++i]})

@@ -14,7 +14,7 @@ export default (executionData:ExecutionData)=>{
 
     const tileCount= executionData.mapHeight*executionData.mapWidth;
 
-    const outputData = executionData.finalItems.map(x=>{return "0x"+(x.index)})
+    const outputData = executionData.finalItems.map(x=>{return "0x"+(x.index.toString(16))})
     const outputDataAttributes = outputData.map(x=>"0")
 
     const exportCContent = `
@@ -45,6 +45,8 @@ const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] = {
 #include <gbdk/platform.h>
 
 #define ${executionData.identifier}_TILE_COUNT ${tileCount}
+#define ${executionData.identifier}_WIDTH ${executionData.mapWidth}
+#define ${executionData.identifier}_HEIGHT ${executionData.mapHeight}
 
 const unsigned char ${executionData.identifier}_map[${tileCount}];
 const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] ;

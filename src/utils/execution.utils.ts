@@ -3,12 +3,14 @@ import { ExecutionData } from "../models/tiled-gameboy-tool-types";
 export const getDefaultExecutionData = ():ExecutionData=>{
     return {
         features: [],
-        objectTypeName: null,
+        objectStructName: null,
         objectGroups: [],
         finalItems: [],
         mapHeight: 20,
         mapWidth: 18,
         tilesets: [],
+        objectStrings: [],
+        totalObjects: [],
         bank: null,
         layers: [],
         objectFields:[],

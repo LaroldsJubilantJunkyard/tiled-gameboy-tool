@@ -9,6 +9,10 @@ export interface Features{
     data:any;
     action:(data:any,items:ExecutionData)=>void
 }
+export interface ObjectString{
+    name:string;
+    value:string
+}
 export interface ObjectField{
     name:string;
     type:string
@@ -16,6 +20,8 @@ export interface ObjectField{
 export interface ExecutionData{
     finalItems:FinalItems[];
     tilesets:ITiledTileset[];
+    objectStrings:ObjectString[]
+    totalObjects:any[];
     objectGroups:ITiledMapObjectGroup[];
     features:Features[]
     mapWidth:number;
@@ -23,7 +29,7 @@ export interface ExecutionData{
     identifier:string;
     objectsOutput:boolean;
     objectFields:ObjectField[];
-    objectTypeName:string|null;
+    objectStructName:string|null;
     bank:string|null;
     inputFile:string;
     layers:ITiledMapLayer[]
