@@ -71,28 +71,9 @@ export const processTiledTMXFile = (executionData: ExecutionData) => {
             );
 
             if (field) {
-              // If this field is a string, we need to create a new constant
-              // We'll use the constant name as the value to output
-              // We'll also add that constant name to a list
-              if (field.type == "string") {
-                var stringConstantName = getIdentifierForString(
-                  executionData.identifier +
-                  "_" +
-                  data.id +
-                  "_" +
-                  property.name);
-                executionData.objectStrings.push({
-                  name: stringConstantName,
-                  value: val,
-                });
-                data[property.name] = stringConstantName;
-              } else {
-                // Use the property value
-                // Convert to a number, if you can
-                data[property.name] = !Number.isNaN(Number(val))
-                  ? Number(val)
-                  : val;
-              }
+
+              data[property.name] =val;
+              
             }
           }
         }

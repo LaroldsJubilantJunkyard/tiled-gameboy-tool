@@ -5,6 +5,7 @@ export const getDefaultExecutionData = ():ExecutionData=>{
         features: [],
         objectStructName: null,
         objectGroups: [],
+        solidMap:[],
         finalItems: [],
         mapHeight: 20,
         mapWidth: 18,

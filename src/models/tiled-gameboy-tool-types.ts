@@ -17,9 +17,14 @@ export interface ObjectField{
     name:string;
     type:string
 }
+export interface ExportListItem{
+    file:string;
+    contents:Buffer|string;
+}
 export interface ExecutionData{
     finalItems:FinalItems[];
     tilesets:ITiledTileset[];
+    solidMap:number[];
     objectStrings:ObjectString[]
     totalObjects:any[];
     objectGroups:ITiledMapObjectGroup[];

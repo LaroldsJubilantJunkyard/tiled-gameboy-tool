@@ -3,6 +3,7 @@ import { ExecutionData, FinalItems } from "../models/tiled-gameboy-tool-types";
 export const getFinalItemsFromLayers= (executionData:ExecutionData):FinalItems[]=>{
 
     const layerIndices:string[] = executionData.layers[0].data.$t.split(",")
+    
     var items:FinalItems[] = layerIndices.map((x:string)=>{return {index:Number(x)-1,tileLayer:0}})
 
     for(var i=1;i<executionData.layers.length;i++){

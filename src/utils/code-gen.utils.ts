@@ -12,12 +12,3 @@ export const getObjectFieldDeclaration = (objectField:ObjectField):string=>{
     }
     return ""
 }
-
-export const getTotalObjectArrayObject = (totalObject:any):string=>{
-
-    // Get fields that are not 'x', 'y', or 'id'
-    // We will manually map those in order
-    const otherFields = Object.keys(totalObject).filter(x=>x!="y"&&x!="x"&&x!="id").map(x=>totalObject[x]).join(",")
-
-    return `{${totalObject.y},${totalObject.x},${totalObject.id},${otherFields}}`
-}
