@@ -5,6 +5,8 @@ import {
 import { sep } from "path";
 import { getExecutionBankPragma } from "../execution.utils";
 
+
+
 export const getGBDKExportCContents = (
   executionData: ExecutionData
 ): string => {
@@ -13,7 +15,9 @@ export const getGBDKExportCContents = (
   const outputData = executionData.finalItems.map((x) => {
     return "0x" + x.index.toString(16);
   });
-  const outputDataAttributes = outputData.map((x) => "0");
+  const outputDataAttributes = executionData.finalItems.map((x) => {
+      return "0x" + x.attribute.toString(16)
+  });
 
   /**
    * There is no banked specified if the user doesnt pass "autobanked", or an integer
@@ -27,6 +31,7 @@ ${bankData}
 
 #include <stdint.h>
 #include <gbdk/platform.h>
+#include "${executionData.identifier}.h"
 
 BANKREF(${executionData.identifier})
 
@@ -69,20 +74,11 @@ const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] ;
 
 
 export const getGBDKExport = (
-  executionData: ExecutionData
-): ExportListItem[] => {
-  return [
-    {
-      file: `${
-        executionData.outputDirectory + sep + executionData.identifier
-      }.c`,
-      contents: getGBDKExportCContents(executionData),
-    },
-    {
-      file: `${
-        executionData.outputDirectory + sep + executionData.identifier
-      }.h`,
-      contents: getGBDKExportHContents(executionData),
-    },
-  ];
+  executionData: ExecutionData,
+  exportList: ExportListItem[] 
+):void => {
+
+  exportList.find(x=>x.extension=="c")?.contents.push(getGBDKExportCContents(executionData))
+  exportList.find(x=>x.extension=="h")?.contents.push(getGBDKExportHContents(executionData))
+
 };

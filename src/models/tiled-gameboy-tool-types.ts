@@ -3,6 +3,7 @@ import { ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-typ
 export interface FinalItems{
     index:number;
     tileLayer:number
+    attribute:number;
 }
 export interface Features{
     name:string;
@@ -19,7 +20,8 @@ export interface ObjectField{
 }
 export interface ExportListItem{
     file:string;
-    contents:Buffer|string;
+    extension:string;
+    contents:(string)[];
 }
 export interface ExecutionData{
     finalItems:FinalItems[];
@@ -31,13 +33,16 @@ export interface ExecutionData{
     features:Features[]
     mapWidth:number;
     mapHeight:number
+    enableSolidMap:boolean;
     identifier:string;
+    offset:number;
     objectsOutput:boolean;
     objectFields:ObjectField[];
     objectStructName:string|null;
     bank:string|null;
     inputFile:string;
     layers:ITiledMapLayer[]
+    enableObjects:boolean;
     outputDirectory:string;
     exportType:string
 }

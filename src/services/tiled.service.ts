@@ -3,7 +3,6 @@ import fs from "fs"
 const parser = require('xml2json');
 
 export function readTiledTMXFile(file:string):ITiledFileData{
-
     
     var contents = fs.readFileSync(file,{encoding:"utf-8", flag:'r'})
     var stringContents = contents.toString()

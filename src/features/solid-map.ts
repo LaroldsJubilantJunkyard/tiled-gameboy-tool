@@ -36,5 +36,5 @@ export default (data:any,executionData:ExecutionData)=>{
 
     })
 
-    fs.writeFileSync(executionData.outputDirectory+sep+data.toString(),JSON.stringify(executionData.solidMap))
+    fs.writeFileSync(executionData.outputDirectory+sep+executionData.identifier+".c",JSON.stringify(executionData.solidMap))
 }
