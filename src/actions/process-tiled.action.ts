@@ -3,15 +3,16 @@ import {
   ITiledFileData,
   ITiledMapObjectGroupObject,
   ITiledTileset,
+  ITiledTilesetDataTile,
   ITiledTilesetDataTileProperty,
 } from "../models/tiled-types";
 import { readTiledTMXFile, readTileset } from "../services/tiled.service";
-import { getFinalItemsFromLayers } from "../utils/layers.utils";
+import { getTilesetImageData } from "../utils/image.utils";
+import { flattenTiledLayers } from "../utils/layers.utils";
 import { singleItemOrArray } from "../utils/micc.utils";
-import { getIdentifierForString } from "../utils/string.utils";
 
-export const processTiledTMXFile = (executionData: ExecutionData) => {
-  // Readthe TMX file
+export const processTiledTMXFile = async (executionData: ExecutionData) => {
+  // Read the TMX file
   var tiledTMXFileData: ITiledFileData = readTiledTMXFile(
     executionData.inputFile
   );
@@ -28,6 +29,32 @@ export const processTiledTMXFile = (executionData: ExecutionData) => {
       return { ...x, data: readTileset(x.source) };
     }
   );
+   getTilesetImageData(executionData);
+
+  executionData.tilesets.forEach((tileset:ITiledTileset,index:number)=>{
+
+    if(tileset.imageData){
+
+        
+      for(var i=0;i<tileset.data.tileset.tilecount;i++){
+
+
+        var column = i%tileset.data.tileset.columns
+        var row = Math.floor(i/tileset.data.tileset.columns)
+
+        var pixelX = column*8;
+        var pixelY = row*8;
+
+        const allTileData:any = {gid:Number(i)+Number(tileset.firstgid),tilesetIndex:index,palette:0};
+        const topLeftColor = tileset.imageData[pixelY][pixelX]
+        allTileData.palette = Math.floor(topLeftColor.index/4);//Math.floor(topLeftColor/4)
+        executionData.allTiles[allTileData.gid]=allTileData
+      }
+    }
+
+  })
+
+
 
   // Get the map layers
   executionData.layers = singleItemOrArray(tiledTMXFileData.map.layer);
@@ -38,7 +65,39 @@ export const processTiledTMXFile = (executionData: ExecutionData) => {
   );
 
   // Getthe final items from the layers
-  executionData.finalItems = getFinalItemsFromLayers(executionData);
+  executionData.finalItems = flattenTiledLayers(executionData);
+
+  
+
+  executionData.solidMap = executionData.finalItems.map(x=>{
+    var tileOrTiles:ITiledTilesetDataTile[] = singleItemOrArray( executionData.tilesets[x.tileLayer].data.tileset.tile)
+
+    if(tileOrTiles==null)return 0
+    if(tileOrTiles.length==0)return 0
+
+
+    var tilesetTileData = tileOrTiles.filter(y=>y!==null&&y!==undefined).find(y=>y.id==x.index+"")
+
+    if(tilesetTileData==null)return 0;
+
+    var propertyOrProperties:ITiledTilesetDataTileProperty[] = singleItemOrArray( tilesetTileData.properties.property)
+
+    var typeProperty = propertyOrProperties.find(y=>y.name=="type")
+
+    if(typeProperty==null)return 0
+
+    var n = Number.NaN;
+    
+    try{
+        n=Number(typeProperty.value);
+    }catch(e){
+
+    }
+
+    return isNaN(n) ? 0 : n;
+
+})
+
 
   const fieldNames = executionData.objectFields.map((x) => x.name);
 
@@ -83,6 +142,4 @@ export const processTiledTMXFile = (executionData: ExecutionData) => {
     });
   });
 
-  // Apply features
-  executionData.features.forEach((x) => x.action(x.data, executionData));
 };

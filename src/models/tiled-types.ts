@@ -15,12 +15,21 @@ export interface ITiledTilesetDataTile{
     id:string;
     properties:ITiledProperties
 }
+export interface IAllTilesData extends ITiledTilesetDataTile{
+
+    gid:number;
+    tilesetIndex:number;
+    palette:number;
+}
 
 export interface ITiledTilesetDataTileset{
 
     tilewidth:number
     tileheight:number
+    tilecount:number;
+    columns:number;
 
+    image:{source:string}
     tile:ITiledTilesetDataTile|ITiledTilesetDataTile[]
 }
 
@@ -31,9 +40,10 @@ export interface ITiledTilesetFileData{
 
 export interface ITiledTileset{
 
-    firstgid:string
+    firstgid:number
     source:string;
     data:ITiledTilesetFileData
+    imageData:{index:number,color:number}[][]
 }
 
 export interface ITiledMapLayerData{

@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx tsc && node build/index.js --enable-objects --solid-map --object-field gbdk.type uint8  --object-field gbdkString.dialogue string  --output-dir dist World1Area1.tmx",
     "package": "npx tsc && pkg build/index.js --out-path ./dist"
+
   },
   "author": "",
   "license": "ISC",

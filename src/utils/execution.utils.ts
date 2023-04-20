@@ -10,6 +10,7 @@ export const getDefaultExecutionData = ():ExecutionData=>{
         finalItems: [],
         mapHeight: 20,
         mapWidth: 18,
+        allTiles:{},
         tilesets: [],
         objectStrings: [],
         offset:0,
@@ -25,18 +26,4 @@ export const getDefaultExecutionData = ():ExecutionData=>{
         exportType: "gbdk",
       };
     
-}
-
-export const getExecutionBankPragma = (executionData:ExecutionData)=>{
-
-    /**
-     * There is no banked specified if the user doesnt pass "autobanked", or an integer
-     */
-    const noBank = executionData.bank==null||(!Number.isInteger(executionData.bank)&&executionData.bank.trim().toUpperCase()!="AUTOBANKED");
-
-    if(noBank)return "";
-
-    // The actual bank or 255 for autobanking
-    const bank = (!Number.isInteger(executionData.bank) ? "255":"");
-    return `#pragma bank ${bank}`
 }

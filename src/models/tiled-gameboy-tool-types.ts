@@ -1,4 +1,4 @@
-import { ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-types";
+import { IAllTilesData, ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-types";
 
 export interface FinalItems{
     index:number;
@@ -23,6 +23,7 @@ export interface ExportListItem{
     extension:string;
     contents:(string)[];
 }
+
 export interface ExecutionData{
     finalItems:FinalItems[];
     tilesets:ITiledTileset[];
@@ -41,6 +42,7 @@ export interface ExecutionData{
     objectStructName:string|null;
     bank:string|null;
     inputFile:string;
+    allTiles:{[key:string]:IAllTilesData};
     layers:ITiledMapLayer[]
     enableObjects:boolean;
     outputDirectory:string;

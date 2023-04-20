@@ -1,4 +1,4 @@
-import { ObjectField } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, ObjectField } from "../models/tiled-gameboy-tool-types";
 import { getIdentifierForString } from "./string.utils";
 
 export const getObjectFieldDeclaration = (objectField:ObjectField):string=>{
@@ -11,4 +11,18 @@ export const getObjectFieldDeclaration = (objectField:ObjectField):string=>{
         case "boolean": return `uint8_t ${getIdentifierForString(objectField.name)};`;
     }
     return ""
+}
+
+export const getExecutionBankPragma = (executionData:ExecutionData)=>{
+
+    /**
+     * There is no banked specified if the user doesnt pass "autobanked", or an integer
+     */
+    const noBank = executionData.bank==null||(!Number.isInteger(executionData.bank)&&executionData.bank.trim().toUpperCase()!="AUTOBANKED");
+
+    if(noBank)return "";
+
+    // The actual bank or 255 for autobanking
+    const bank = (!Number.isInteger(executionData.bank) ? "255":"");
+    return `#pragma bank ${bank}`
 }

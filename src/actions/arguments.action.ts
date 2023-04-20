@@ -55,9 +55,9 @@ export const readProcessArguments = (executionData: ExecutionData) => {
     } else if (arg == "-sm" || arg == "--solid-map") {
       // Add the solid map feature
       executionData.enableSolidMap = true;
-    } else if (arg == "-x" || arg == "--export-type") {
+    } else if (arg == "--gbdk"||arg == "--rgbds") {
       // Set the export type
-      executionData.exportType = process.argv[++i];
+      executionData.exportType = arg.substring(2);
     } else if (arg == "-of" || arg == "--offset") {
       // Add the offset feature
       executionData.offset = Number(process.argv[++i]);

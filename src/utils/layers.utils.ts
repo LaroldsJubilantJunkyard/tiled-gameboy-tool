@@ -1,7 +1,7 @@
 import { ExecutionData, FinalItems } from "../models/tiled-gameboy-tool-types";
 import { replaceChar } from "./string.utils";
 
-export const getFinalItemsFromLayers= (executionData:ExecutionData):FinalItems[]=>{
+export const flattenTiledLayers= (executionData:ExecutionData):FinalItems[]=>{
 
     const layerIndices:string[] = executionData.layers[0].data.$t.split(",")
     
