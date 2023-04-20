@@ -26,6 +26,7 @@ export interface ExportListItem{
 
 export interface ExecutionData{
     finalItems:FinalItems[];
+    processArguments:string[];
     tilesets:ITiledTileset[];
     solidMap:number[];
     objectStrings:ObjectString[]

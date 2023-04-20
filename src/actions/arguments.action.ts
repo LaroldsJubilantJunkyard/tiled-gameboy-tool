@@ -9,11 +9,11 @@ export const readProcessArguments = (executionData: ExecutionData) => {
   executionData.identifier = getIdentifierForFile(executionData.inputFile);
 
   // Loopthrough all the process arguments, skipping the first two command line arguments
-  for (var i = 2; i < process.argv.length; i++) {
-    var arg = process.argv[i];
+  for (var i = 2; i < executionData.processArguments.length; i++) {
+    var arg = executionData.processArguments[i];
 
     if (arg == "-d" || arg == "--output-dir") {
-      const od = process.argv[++i];
+      const od = executionData.processArguments[++i];
 
       // set the output directory
       executionData.outputDirectory = getAbsoluteUrl(od)
@@ -30,15 +30,15 @@ export const readProcessArguments = (executionData: ExecutionData) => {
       executionData.enableObjects = true;
     } else if (arg == "-id" || arg == "--identifier") {
       // manually set the identifier
-      executionData.identifier = process.argv[++i];
+      executionData.identifier = executionData.processArguments[++i];
     } else if (arg == "--object-struct-name") {
       // add the object ield
-      executionData.objectStructName = process.argv[++i];
+      executionData.objectStructName = executionData.processArguments[++i];
     } else if (arg == "--object-field") {
       // add the object field
       // The next argument will be the name & type respectively
-      const name: string = process.argv[++i];
-      const type: string = process.argv[++i];
+      const name: string = executionData.processArguments[++i];
+      const type: string = executionData.processArguments[++i];
 
       // Make sure we have a proper type
       if (getObjectFieldDeclaration({ name, type }) == "") {
@@ -48,7 +48,7 @@ export const readProcessArguments = (executionData: ExecutionData) => {
       executionData.objectFields.push({ name, type });
     } else if (arg == "-b" || arg == "--bank") {
 
-      const newBank = process.argv[++i];
+      const newBank = executionData.processArguments[++i];
 
       // Make sure we have a valid bank value
       if(newBank!="AUTOBANKED"&&newBank!="NONBANKED"&&!Number.isInteger(newBank)){
@@ -67,7 +67,7 @@ export const readProcessArguments = (executionData: ExecutionData) => {
       executionData.exportType = arg.substring(2);
     } else if (arg == "-of" || arg == "--offset") {
       // Add the offset feature
-      executionData.offset = Number(process.argv[++i]);
+      executionData.offset = Number(executionData.processArguments[++i]);
     }
   }
 

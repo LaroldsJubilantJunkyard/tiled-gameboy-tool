@@ -1,8 +1,9 @@
 import { ExecutionData } from "../models/tiled-gameboy-tool-types";
 
-export const getDefaultExecutionData = (tmxFilePath:string):ExecutionData=>{
+export const getDefaultExecutionData = (tmxFilePath:string,processArguments:string[]):ExecutionData=>{
     return {
         features: [],
+        processArguments:processArguments,
         objectStructName: null,
         objectGroups: [],
         solidMap:[],
