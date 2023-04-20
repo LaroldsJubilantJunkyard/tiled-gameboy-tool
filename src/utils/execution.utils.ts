@@ -1,6 +1,6 @@
 import { ExecutionData } from "../models/tiled-gameboy-tool-types";
 
-export const getDefaultExecutionData = ():ExecutionData=>{
+export const getDefaultExecutionData = (tmxFilePath:string):ExecutionData=>{
     return {
         features: [],
         objectStructName: null,
@@ -8,8 +8,8 @@ export const getDefaultExecutionData = ():ExecutionData=>{
         solidMap:[],
         enableObjects:true,
         finalItems: [],
-        mapHeight: 20,
-        mapWidth: 18,
+        mapHeight: 0,
+        mapWidth: 0,
         allTiles:{},
         tilesets: [],
         objectStrings: [],
@@ -21,7 +21,7 @@ export const getDefaultExecutionData = ():ExecutionData=>{
         objectFields:[],
         objectsOutput:false,
         outputDirectory: process.env.PWD||process.cwd(),
-        inputFile: "",
+        inputFile: tmxFilePath,
         identifier: "",
         exportType: "gbdk",
       };

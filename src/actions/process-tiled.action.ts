@@ -139,6 +139,10 @@ export const flattenTiledLayers = (
 
 const getSolidMaps = (executionData: ExecutionData) => {
   executionData.solidMap = executionData.finalItems.map((x) => {
+    if(executionData.tilesets[x.tileLayer]==null)return 0;
+    if(executionData.tilesets[x.tileLayer].data==null)return 0;
+    if(executionData.tilesets[x.tileLayer].data.tileset==null)return 0;
+    if(executionData.tilesets[x.tileLayer].data.tileset.tile==null)return 0;
     var tileOrTiles: ITiledTilesetDataTile[] = singleItemOrArray(
       executionData.tilesets[x.tileLayer].data.tileset.tile
     );

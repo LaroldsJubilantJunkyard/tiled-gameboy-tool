@@ -45,12 +45,14 @@ export function replaceChar(origString:string, replaceChar:string, index:number)
     // Loop for eachline
     for(var i=1;i<finalStringSplit.length;i++){
 
-        // If the last line we added is blank
-        if(finalStringModified[finalStringModified.length-1].trim().length==0){
+        if(finalStringModified.length>0){
+            // If the last line we added is blank
+            if(finalStringModified[finalStringModified.length-1].trim().length==0){
 
-            // If the current line was break, skip this line
-            if(finalStringSplit[i].trim().length==0)continue;
+                // If the current line was break, skip this line
+                if(finalStringSplit[i].trim().length==0)continue;
 
+            }
         }
 
         finalStringModified.push(finalStringSplit[i])

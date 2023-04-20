@@ -6,17 +6,6 @@ import fs from "fs";
 import { getAbsoluteUrl } from "../utils/file.utils";
 export const readProcessArguments = (executionData: ExecutionData) => {
 
-  // The input file should be the last file
-  // By defualt use the input file to derive the main identifier
-  executionData.inputFile = getAbsoluteUrl(process.argv[process.argv.length - 1]);
-  
-  // Make sure the file provided exists
-  if(!fs.existsSync(executionData.inputFile)){
-
-    console.error(`The specified file does not exist: ${executionData.inputFile}`)
-    process.exit();
-  }
-
   executionData.identifier = getIdentifierForFile(executionData.inputFile);
 
   // Loopthrough all the process arguments, skipping the first two command line arguments
