@@ -1,8 +1,7 @@
-import { ExecutionData, ExportListItem } from "../../models/tiled-gameboy-tool-types"
-import {sep} from 'path'
-import { splitArrayIntoRows } from "../array.utils";
 
-const mapToTabbedByteRow = (x:string[])=>"\tDB "+x.map(x=>"$"+Number(x).toString(16)).join(",").toUpperCase()
+import {sep} from 'path'
+import { splitArrayIntoRows } from '../../array.utils'
+import { ExecutionData, ExportListItem } from '../../../models/tiled-gameboy-tool-types'
 
 const getRGBDSExportContents = (executionData:ExecutionData)=>{
     var mappedRows = splitArrayIntoRows(executionData.finalItems,executionData.mapWidth)
@@ -24,7 +23,6 @@ ${executionData.identifier}_Map_AttributesEnd::
     `
     return writeContent;
 }
-
 
 export const getRGBDSExport = (executionData:ExecutionData,exportList: ExportListItem[] ):void=>{
     exportList[0].contents.push(getRGBDSExportContents(executionData))

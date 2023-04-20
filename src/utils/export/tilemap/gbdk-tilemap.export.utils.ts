@@ -1,9 +1,9 @@
 import {
   ExecutionData,
   ExportListItem,
-} from "../../models/tiled-gameboy-tool-types";
+} from "../../../models/tiled-gameboy-tool-types";
 import { sep } from "path";
-import { getExecutionBankPragma } from "../code-gen.utils";
+import { getExecutionBankPragma } from "../../code-gen.utils";
 
 
 

@@ -1,4 +1,4 @@
-import { ExecutionData } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, FinalItems } from "../models/tiled-gameboy-tool-types";
 import {
   ITiledFileData,
   ITiledMapObjectGroupObject,
@@ -7,11 +7,11 @@ import {
   ITiledTilesetDataTileProperty,
 } from "../models/tiled-types";
 import { readTiledTMXFile, readTileset } from "../services/tiled.service";
-import { getTilesetImageData } from "../utils/image.utils";
-import { flattenTiledLayers } from "../utils/layers.utils";
 import { singleItemOrArray } from "../utils/micc.utils";
+import { replaceChar } from "../utils/string.utils";
 
 export const processTiledTMXFile = async (executionData: ExecutionData) => {
+  
   // Read the TMX file
   var tiledTMXFileData: ITiledFileData = readTiledTMXFile(
     executionData.inputFile
@@ -21,6 +21,19 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
   executionData.mapWidth = Number(tiledTMXFileData.map.width);
   executionData.mapHeight = Number(tiledTMXFileData.map.height);
 
+  // Get the final items from the layers
+  flattenTiledLayers(tiledTMXFileData, executionData);
+  // Read the solid maps
+  getSolidMaps(executionData);
+
+  // Get all of the objects
+  getTotalObjects(tiledTMXFileData, executionData);
+};
+
+export const getTilesets = (
+  tiledTMXFileData: ITiledFileData,
+  executionData: ExecutionData
+) => {
   /**
    * Read the tileset data file
    */
@@ -29,75 +42,141 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
       return { ...x, data: readTileset(x.source) };
     }
   );
-   getTilesetImageData(executionData);
 
-  executionData.tilesets.forEach((tileset:ITiledTileset,index:number)=>{
+  executionData.tilesets.forEach((tileset) => {});
 
-    if(tileset.imageData){
+  executionData.tilesets.forEach((tileset: ITiledTileset, index: number) => {
+    if (tileset.imageData) {
+      for (var i = 0; i < tileset.data.tileset.tilecount; i++) {
+        var column = i % tileset.data.tileset.columns;
+        var row = Math.floor(i / tileset.data.tileset.columns);
 
-        
-      for(var i=0;i<tileset.data.tileset.tilecount;i++){
+        var pixelX = column * 8;
+        var pixelY = row * 8;
 
-
-        var column = i%tileset.data.tileset.columns
-        var row = Math.floor(i/tileset.data.tileset.columns)
-
-        var pixelX = column*8;
-        var pixelY = row*8;
-
-        const allTileData:any = {gid:Number(i)+Number(tileset.firstgid),tilesetIndex:index,palette:0};
-        const topLeftColor = tileset.imageData[pixelY][pixelX]
-        allTileData.palette = Math.floor(topLeftColor.index/4);//Math.floor(topLeftColor/4)
-        executionData.allTiles[allTileData.gid]=allTileData
+        const allTileData: any = {
+          gid: Number(i) + Number(tileset.firstgid),
+          tilesetIndex: index,
+          palette: 0,
+        };
+        const topLeftColor = tileset.imageData[pixelY][pixelX];
+        allTileData.palette = Math.floor(topLeftColor.index / 4); //Math.floor(topLeftColor/4)
+        executionData.allTiles[allTileData.gid] = allTileData;
       }
     }
+  });
+};
 
-  })
-
-
-
+export const flattenTiledLayers = (
+  tiledTMXFileData: ITiledFileData,
+  executionData: ExecutionData
+) => {
   // Get the map layers
   executionData.layers = singleItemOrArray(tiledTMXFileData.map.layer);
 
+  const layerIndices: string[] = executionData.layers[0].data.$t.split(",");
+
+  var items: FinalItems[] = layerIndices.map((x: string) => {
+    return { index: Number(x) - 1, tileLayer: 0, attribute: 0 };
+  });
+
+  for (var i = 1; i < executionData.layers.length; i++) {
+    var layer = executionData.layers[i].data["$t"]
+      .split(",")
+      .map((x) => Number(x));
+
+    layer.forEach((x: number, index: number) => {
+      var indexedX = x - 1;
+
+      if (indexedX >= 0) {
+        items[index].index = indexedX;
+        items[index].tileLayer = i;
+      }
+    });
+  }
+
+  items.forEach((x) => {
+    /**
+       * From: https://doc.mapeditor.org/en/stable/reference/global-tile-ids/#gid-tile-flipping
+       * Tile Flipping
+       * 
+       * The highest four bits of the 32-bit GID are flip flags, and you will need to read and clear them before you can access the GID itself to 
+       * identify the tile.
+
+       * Bit 32 is used for storing whether the tile is horizontally flipped, bit 31 is used for the vertically flipped tiles. 
+       * In orthogonal and isometric maps, bit 30 indicates whether the tile is flipped (anti) diagonally, which enables tile rotation, 
+       * and bit 29 can be ignored. In hexagonal maps, bit 30 indicates whether the tile is rotated 60 degrees clockwise, 
+       * and bit 29 indicates 120 degrees clockwise rotation.
+       */
+    var bin = x.index.toString(2).padStart(32);
+    var horizontallyFlipped = bin[0] == "1";
+    var verticallyFlipped = bin[1] == "1";
+    var newIndex: string = bin.substring(26);
+    var attributeValue: string = bin.substring(0, 4);
+
+    /**
+     * From: https://gbdk-2020.github.io/gbdk-2020/docs/api/gb_8h.html
+     * Bit 6 - Vertical flip. Dictates which way up the tile is drawn vertically.
+     * Bit 5 - Horizontal flip. Dictates which way up the tile is drawn horizontally.
+     */
+    attributeValue = replaceChar(
+      attributeValue,
+      verticallyFlipped ? "1" : "0",
+      1
+    );
+    attributeValue = replaceChar(
+      attributeValue,
+      horizontallyFlipped ? "1" : "0",
+      2
+    );
+
+    x.attribute = parseInt(attributeValue, 2);
+    x.index = parseInt(newIndex, 2);
+  });
+
+  executionData.finalItems = items;
+};
+
+const getSolidMaps = (executionData: ExecutionData) => {
+  executionData.solidMap = executionData.finalItems.map((x) => {
+    var tileOrTiles: ITiledTilesetDataTile[] = singleItemOrArray(
+      executionData.tilesets[x.tileLayer].data.tileset.tile
+    );
+
+    if (tileOrTiles == null) return 0;
+    if (tileOrTiles.length == 0) return 0;
+
+    var tilesetTileData = tileOrTiles
+      .filter((y) => y !== null && y !== undefined)
+      .find((y) => y.id == x.index + "");
+
+    if (tilesetTileData == null) return 0;
+
+    var propertyOrProperties: ITiledTilesetDataTileProperty[] =
+      singleItemOrArray(tilesetTileData.properties.property);
+
+    var typeProperty = propertyOrProperties.find((y) => y.name == "type");
+
+    if (typeProperty == null) return 0;
+
+    var n = Number.NaN;
+
+    try {
+      n = Number(typeProperty.value);
+    } catch (e) {}
+
+    return isNaN(n) ? 0 : n;
+  });
+};
+
+const getTotalObjects = (
+  tiledTMXFileData: ITiledFileData,
+  executionData: ExecutionData
+) => {
   // Get the object groups
   executionData.objectGroups = singleItemOrArray(
     tiledTMXFileData.map.objectgroup
   );
-
-  // Getthe final items from the layers
-  executionData.finalItems = flattenTiledLayers(executionData);
-
-  
-
-  executionData.solidMap = executionData.finalItems.map(x=>{
-    var tileOrTiles:ITiledTilesetDataTile[] = singleItemOrArray( executionData.tilesets[x.tileLayer].data.tileset.tile)
-
-    if(tileOrTiles==null)return 0
-    if(tileOrTiles.length==0)return 0
-
-
-    var tilesetTileData = tileOrTiles.filter(y=>y!==null&&y!==undefined).find(y=>y.id==x.index+"")
-
-    if(tilesetTileData==null)return 0;
-
-    var propertyOrProperties:ITiledTilesetDataTileProperty[] = singleItemOrArray( tilesetTileData.properties.property)
-
-    var typeProperty = propertyOrProperties.find(y=>y.name=="type")
-
-    if(typeProperty==null)return 0
-
-    var n = Number.NaN;
-    
-    try{
-        n=Number(typeProperty.value);
-    }catch(e){
-
-    }
-
-    return isNaN(n) ? 0 : n;
-
-})
-
 
   const fieldNames = executionData.objectFields.map((x) => x.name);
 
@@ -130,9 +209,7 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
             );
 
             if (field) {
-
-              data[property.name] =val;
-              
+              data[property.name] = val;
             }
           }
         }
@@ -141,5 +218,4 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
       executionData.totalObjects.push(data);
     });
   });
-
 };

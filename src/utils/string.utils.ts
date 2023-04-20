@@ -11,7 +11,7 @@ export const getIdentifierForFile = (file:string):string=>{
 export const getIdentifierForString = (str:string):string=>{
 
     // replace all non alphanumeric
-    return str.replace(/[^A-Za-z0-9_]+/g,"_");
+    return str.replace(/[^A-Za-z0-9_]+/g,"_").toLowerCase();
 }
 
 
@@ -30,3 +30,30 @@ export function replaceChar(origString:string, replaceChar:string, index:number)
     return newString;
   }
   
+
+  /**
+   * This functions splits a string by line breaks, and removes extra line breaks. This 
+   * @param str The multi-line string to remove double line breaks from
+   * @returns Returns the original string, minus double-line breaks
+   */
+  export function removeDoubleLineBreaks (str:string){
+
+    // Split by line break characters
+    const finalStringSplit = str.split("\n")
+    const finalStringModified:string[] = []
+
+    // Loop for eachline
+    for(var i=1;i<finalStringSplit.length;i++){
+
+        // If the last line we added is blank
+        if(finalStringModified[finalStringModified.length-1].trim().length==0){
+
+            // If the current line was break, skip this line
+            if(finalStringSplit[i].trim().length==0)continue;
+
+        }
+
+        finalStringModified.push(finalStringSplit[i])
+    }
+    return finalStringModified.join("\n").trim();
+  }

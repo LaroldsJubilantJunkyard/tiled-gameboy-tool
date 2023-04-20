@@ -1,8 +1,8 @@
-import { ExecutionData, ExportListItem, ObjectField } from "../../models/tiled-gameboy-tool-types"
-import { getObjectFieldDeclaration } from "../code-gen.utils"
-import { getObjectStructName } from "../export.utils"
+import { ExecutionData, ExportListItem, ObjectField } from "../../../models/tiled-gameboy-tool-types"
+import { getObjectFieldDeclaration } from "../../code-gen.utils"
+import { getObjectStructName } from "../../export.utils"
 import {sep} from 'path'
-import { getIdentifierForString } from "../string.utils"
+import { getIdentifierForString } from "../../string.utils"
 
 
 const getStructDataString =(executionData:ExecutionData)=>{

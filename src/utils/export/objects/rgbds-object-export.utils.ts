@@ -1,5 +1,6 @@
-import { ExecutionData, ExportListItem, ObjectField } from "../../models/tiled-gameboy-tool-types"
+
 import {sep} from 'path'
+import { ExecutionData, ExportListItem, ObjectField } from '../../../models/tiled-gameboy-tool-types'
 
 
 const getRGBDSObjectExportContents = (executionData:ExecutionData)=>{

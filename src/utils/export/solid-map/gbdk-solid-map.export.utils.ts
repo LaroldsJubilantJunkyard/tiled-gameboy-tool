@@ -1,5 +1,5 @@
-import { ExecutionData, ExportListItem } from "../../models/tiled-gameboy-tool-types"
-import { splitArrayIntoRows } from '../array.utils'
+import { ExecutionData, ExportListItem } from "../../../models/tiled-gameboy-tool-types"
+import { splitArrayIntoRows } from '../../array.utils'
 
 export const getGBDKSolidMapExports = (executionData:ExecutionData,exportList:ExportListItem[])=>{
     const tileCount = executionData.mapHeight * executionData.mapWidth;

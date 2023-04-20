@@ -1,3 +1,9 @@
-export const singleItemOrArray = (value:any)=>{
+/**
+ * XML to json will output a single-item array as just an object (not an array with only one item).
+ * The  value can be passed into this function to make sure you can operate as an array
+ * @param value An array or a single object.
+ * @returns An array of the given type
+ */
+export const singleItemOrArray = <T>(value:T|T[]):T[]=>{
     return Array.isArray(value) ? value : [value]
 }

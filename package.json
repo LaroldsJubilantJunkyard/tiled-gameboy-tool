@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "npx tsc && node build/index.js --enable-objects --solid-map --object-field gbdk.type uint8  --object-field gbdkString.dialogue string  --output-dir dist World1Area1.tmx",
-    "package": "npx tsc && pkg build/index.js --out-path ./dist"
-
+    "build": "npx tsc",
+    "build:package": "npm run build && npm run package",
+    "package": "npm run package:windows && npm run package:linux && npm run package:macos",
+    "package:windows": "pkg build/index.js -t windows --output ./dist/windows/tiled-gameboy-tool.exe",
+    "package:linux": "pkg build/index.js -t linux --output ./dist/linux/tiled-gameboy-tool",
+    "package:macos": "pkg build/index.js -t mac --output ./dist/macos/tiled-gameboy-tool"
   },
   "author": "",
   "license": "ISC",
