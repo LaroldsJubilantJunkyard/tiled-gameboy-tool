@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx tsc && node build/index.js --enable-objects --solid-map --object-field gbdk.type uint8  --object-field gbdkString.dialogue string  --output-dir dist ./",
+    "test": "jest",
     "build": "npx tsc",
     "build:package": "npm run build && npm run package",
     "package": "npm run package:windows && npm run package:linux && npm run package:macos",
@@ -19,6 +19,7 @@
     "xml2json": "^0.12.0"
   },
   "devDependencies": {
+    "jest": "^29.5.0",
     "typescript": "^5.0.4"
   }
 }
