@@ -26,6 +26,9 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
   // Read the solid maps
   getSolidMaps(executionData);
 
+  // Get tilemap attributes
+  getTilemapAttributes(executionData);
+
   // Get all of the objects
   getTotalObjects(tiledTMXFileData, executionData);
 };
@@ -136,7 +139,41 @@ export const flattenTiledLayers = (
 
   executionData.finalItems = items;
 };
+const getTilemapAttributes = (executionData: ExecutionData) => {
+  executionData.tilemapAttributes = executionData.finalItems.map((x) => {
+    if(executionData.tilesets[x.tileLayer]==null)return 0;
+    if(executionData.tilesets[x.tileLayer].data==null)return 0;
+    if(executionData.tilesets[x.tileLayer].data.tileset==null)return 0;
+    if(executionData.tilesets[x.tileLayer].data.tileset.tile==null)return 0;
+    var tileOrTiles: ITiledTilesetDataTile[] = singleItemOrArray(
+      executionData.tilesets[x.tileLayer].data.tileset.tile
+    );
 
+    if (tileOrTiles == null) return 0;
+    if (tileOrTiles.length == 0) return 0;
+
+    var tilesetTileData = tileOrTiles
+      .filter((y) => y !== null && y !== undefined)
+      .find((y) => y.id == x.index + "");
+
+    if (tilesetTileData == null) return 0;
+
+    var propertyOrProperties: ITiledTilesetDataTileProperty[] =
+      singleItemOrArray(tilesetTileData.properties.property);
+
+    var typeProperty = propertyOrProperties.find((y) => y.name == "color-palette");
+
+    if (typeProperty == null) return 0;
+
+    var n = Number.NaN;
+
+    try {
+      n = Number(typeProperty.value);
+    } catch (e) {}
+
+    return isNaN(n) ? 0 : n;
+  });
+};
 const getSolidMaps = (executionData: ExecutionData) => {
   executionData.solidMap = executionData.finalItems.map((x) => {
     if(executionData.tilesets[x.tileLayer]==null)return 0;
@@ -159,7 +196,7 @@ const getSolidMaps = (executionData: ExecutionData) => {
     var propertyOrProperties: ITiledTilesetDataTileProperty[] =
       singleItemOrArray(tilesetTileData.properties.property);
 
-    var typeProperty = propertyOrProperties.find((y) => y.name == "type");
+    var typeProperty = propertyOrProperties.find((y) => y.name == "solid-map-type");
 
     if (typeProperty == null) return 0;
 

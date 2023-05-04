@@ -29,6 +29,7 @@ export interface ExecutionData{
     processArguments:string[];
     tilesets:ITiledTileset[];
     solidMap:number[];
+    tilemapAttributes:number[];
     objectStrings:ObjectString[]
     totalObjects:any[];
     objectGroups:ITiledMapObjectGroup[];

@@ -15,8 +15,8 @@ export const getGBDKExportCContents = (
   const outputData = executionData.finalItems.map((x) => {
     return "0x" + x.index.toString(16);
   });
-  const outputDataAttributes = executionData.finalItems.map((x) => {
-      return "0x" + x.attribute.toString(16)
+  const outputDataAttributes = executionData.tilemapAttributes.map((x) => {
+      return "0x" + x.toString(16)
   });
 
   /**

@@ -6,6 +6,7 @@ export const getDefaultExecutionData = (tmxFilePath:string,processArguments:stri
         processArguments:processArguments,
         objectStructName: null,
         objectGroups: [],
+        tilemapAttributes: [],
         solidMap:[],
         enableObjects:true,
         finalItems: [],
