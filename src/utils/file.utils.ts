@@ -23,7 +23,7 @@ export function getAbsoluteUrl(url:string,baseDir:string|null=null):string{
 
     // Return things as-is, if it's already absolute
     return isAbsolute(url)
-        ? url
+        ? resolve(url)
 
         // Resolve using the current working directly if it's not absolute
         : resolve(baseDir+sep+url)

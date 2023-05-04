@@ -1,15 +1,18 @@
-import {sep,isAbsolute,resolve} from 'path'
+import {sep,basename,extname} from 'path'
+import { getAbsoluteUrl } from './file.utils';
 
 export const getIdentifierForFile = (file:string):string=>{
 
-    file = isAbsolute(file)? resolve(file):  resolve(__dirname,file)
+    file = getAbsoluteUrl(file);
 
-    const split = file.split(sep)
-    const last = split[split.length-1]
-
-    return getIdentifierForString(last.substring(0,last.indexOf(".")))
+    return getIdentifierForString(basename(file,extname(file)))
 }
 
+/**
+ * This function generates a c-safe identifier from the passed in string. Removing any characters that aren't supported
+ * @param str An input string that may or may not be safe for programming
+ * @returns A alphanumeric (+ underscore) lowercase string
+ */
 export const getIdentifierForString = (str:string):string=>{
 
     // replace all non alphanumeric
