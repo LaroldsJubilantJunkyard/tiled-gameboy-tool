@@ -1,25 +1,32 @@
 import { ExecutionData, InputFileFormat } from "../models/tiled-gameboy-tool-types";
 import { getIdentifierForFile } from "../utils/string.utils";
-import { isAbsolute, sep } from "path";
 import { getObjectFieldDeclaration } from "../utils/code-gen.utils";
 import fs from "fs";
 import { getAbsoluteUrl } from "../utils/file.utils";
 export const readProcessArguments = (executionData: ExecutionData) => {
 
+  executionData.identifier="";
+
   // Loopthrough all the process arguments, skipping the first two command line arguments
   for (var i = 2; i < executionData.processArguments.length; i++) {
     var arg = executionData.processArguments[i];
 
-    if (arg == "--ltdk") {
+    if (arg == "--ldtk") {
       const inputFile = executionData.processArguments[++i];
 
       executionData.inputFile = inputFile
       executionData.inputFileFormat = InputFileFormat.LDtk;
+
+      // Check if we don't already have an identifier passed in
+      if(executionData.identifier.length==0)executionData.identifier = getIdentifierForFile(inputFile);
     } else if (arg == "--tiled") {
       const inputFile = executionData.processArguments[++i];
 
       executionData.inputFile = inputFile
       executionData.inputFileFormat = InputFileFormat.Tiled;
+
+      // Check if we don't already have an identifier passed in
+      if(executionData.identifier.length==0)executionData.identifier = getIdentifierForFile(inputFile);
     } else if (arg == "-d" || arg == "--output-dir") {
       const od = executionData.processArguments[++i];
 
@@ -77,17 +84,6 @@ export const readProcessArguments = (executionData: ExecutionData) => {
       // Add the offset feature
       executionData.offset = Number(executionData.processArguments[++i]);
     }
-  }
-
-  
-
-  executionData.identifier = getIdentifierForFile(executionData.inputFile);
-
-  if(executionData.inputFileFormat==InputFileFormat.None){
-
-    console.error(`input file not specified`);
-    console.error(`Used '--tiled <file-name>' or '--ldtk <file-name>'`);
-    process.exit();
   }
 
   return executionData;

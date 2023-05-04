@@ -2,16 +2,23 @@
   "name": "tiled-gameboy-tool",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
+  "bin": "build/index.js",
   "scripts": {
     "test": "jest",
     "test:node": "npx tsc && node build/index.js --enable-objects --output-dir dist --tiled assets/World1Area1.tmx",
     "build": "npx tsc",
     "build:package": "npm run build && npm run package",
     "package": "npm run package:windows && npm run package:linux && npm run package:macos",
-    "package:windows": "pkg build/index.js -t windows --output ./dist/windows/tiled-gameboy-tool.exe",
-    "package:linux": "pkg build/index.js -t linux --output ./dist/linux/tiled-gameboy-tool",
-    "package:macos": "pkg build/index.js -t mac --output ./dist/macos/tiled-gameboy-tool"
+    "package:windows": "pkg build/index.js -c package.json -t windows --output ./dist/windows/tiled-gameboy-tool.exe",
+    "package:linux": "pkg build/index.js -c package.json -t linux --output ./dist/linux/tiled-gameboy-tool",
+    "package:macos": "pkg build/index.js -c package.json -t mac --output ./dist/macos/tiled-gameboy-tool"
+  },
+  "pkg":{
+    "assets":[
+      "node_modules\\node-expat\\**",
+      "node_modules\\xml2json\\**"
+    ]
   },
   "author": "",
   "license": "ISC",
