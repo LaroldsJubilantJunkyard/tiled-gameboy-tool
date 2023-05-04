@@ -1,6 +1,8 @@
-import {sep} from 'path'
+import {sep,isAbsolute,resolve} from 'path'
 
 export const getIdentifierForFile = (file:string):string=>{
+
+    file = isAbsolute(file)? resolve(file):  resolve(__dirname,file)
 
     const split = file.split(sep)
     const last = split[split.length-1]

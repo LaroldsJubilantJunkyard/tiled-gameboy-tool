@@ -4,6 +4,7 @@ export interface FinalItems{
     index:number;
     tileLayer:number
     attribute:number;
+    tileIndex:number;
 }
 export interface Features{
     name:string;
@@ -24,8 +25,11 @@ export interface ExportListItem{
     contents:(string)[];
 }
 
+export enum InputFileFormat {None,Tiled, LDtk}
+
 export interface ExecutionData{
     finalItems:FinalItems[];
+    inputFileFormat:InputFileFormat;
     processArguments:string[];
     tilesets:ITiledTileset[];
     solidMap:number[];

@@ -1,4 +1,4 @@
-import { ExecutionData } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, InputFileFormat } from "../models/tiled-gameboy-tool-types";
 import { getIdentifierForFile } from "../utils/string.utils";
 import { isAbsolute, sep } from "path";
 import { getObjectFieldDeclaration } from "../utils/code-gen.utils";
@@ -6,13 +6,21 @@ import fs from "fs";
 import { getAbsoluteUrl } from "../utils/file.utils";
 export const readProcessArguments = (executionData: ExecutionData) => {
 
-  executionData.identifier = getIdentifierForFile(executionData.inputFile);
-
   // Loopthrough all the process arguments, skipping the first two command line arguments
   for (var i = 2; i < executionData.processArguments.length; i++) {
     var arg = executionData.processArguments[i];
 
-    if (arg == "-d" || arg == "--output-dir") {
+    if (arg == "--ltdk") {
+      const inputFile = executionData.processArguments[++i];
+
+      executionData.inputFile = inputFile
+      executionData.inputFileFormat = InputFileFormat.LDtk;
+    } else if (arg == "--tiled") {
+      const inputFile = executionData.processArguments[++i];
+
+      executionData.inputFile = inputFile
+      executionData.inputFileFormat = InputFileFormat.Tiled;
+    } else if (arg == "-d" || arg == "--output-dir") {
       const od = executionData.processArguments[++i];
 
       // set the output directory
@@ -69,6 +77,17 @@ export const readProcessArguments = (executionData: ExecutionData) => {
       // Add the offset feature
       executionData.offset = Number(executionData.processArguments[++i]);
     }
+  }
+
+  
+
+  executionData.identifier = getIdentifierForFile(executionData.inputFile);
+
+  if(executionData.inputFileFormat==InputFileFormat.None){
+
+    console.error(`input file not specified`);
+    console.error(`Used '--tiled <file-name>' or '--ldtk <file-name>'`);
+    process.exit();
   }
 
   return executionData;

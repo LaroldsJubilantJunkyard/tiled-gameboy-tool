@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:node": "npx tsc && node build/index.js --enable-objects --output-dir dist --tiled assets/World1Area1.tmx",
     "build": "npx tsc",
     "build:package": "npm run build && npm run package",
     "package": "npm run package:windows && npm run package:linux && npm run package:macos",

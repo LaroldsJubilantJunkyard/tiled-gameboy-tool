@@ -21,16 +21,17 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
   executionData.mapWidth = Number(tiledTMXFileData.map.width);
   executionData.mapHeight = Number(tiledTMXFileData.map.height);
 
-  // Get the final items from the layers
-  flattenTiledLayers(tiledTMXFileData, executionData);
   // Read the solid maps
   getSolidMaps(executionData);
 
-  // Get tilemap attributes
-  getTilemapAttributes(executionData);
-
   // Get all of the objects
   getTotalObjects(tiledTMXFileData, executionData);
+
+  // Get the final items from the layers
+  flattenTiledLayers(tiledTMXFileData, executionData);
+
+  // Get tilemap attributes
+  getTilemapAttributes(executionData);
 };
 
 export const getTilesets = (
@@ -79,8 +80,12 @@ export const flattenTiledLayers = (
 
   const layerIndices: string[] = executionData.layers[0].data.$t.split(",");
 
-  var items: FinalItems[] = layerIndices.map((x: string) => {
-    return { index: Number(x) - 1, tileLayer: 0, attribute: 0 };
+  var items: FinalItems[] = layerIndices.map((x: string,index:number) => {
+    const mapColumnCount = Math.floor(executionData.mapWidth);
+    const column = (index%mapColumnCount);
+    const row = Math.floor(index/mapColumnCount);
+    const tileIndex:number = column+row*mapColumnCount
+    return { index: Number(x) - 1, tileLayer: 0, attribute: 0,column,row,tileIndex};
   });
 
   for (var i = 1; i < executionData.layers.length; i++) {
@@ -99,6 +104,7 @@ export const flattenTiledLayers = (
   }
 
   items.forEach((x) => {
+
     /**
        * From: https://doc.mapeditor.org/en/stable/reference/global-tile-ids/#gid-tile-flipping
        * Tile Flipping
@@ -132,6 +138,15 @@ export const flattenTiledLayers = (
       horizontallyFlipped ? "1" : "0",
       2
     );
+
+    var objIndex = executionData.totalObjects.findIndex(y=>y.tileIndex==x.tileIndex);
+
+    if(objIndex!=-1 && executionData.enableObjects){
+      console.log(`Placing ${executionData.totalObjects[objIndex]} at ${x.tileIndex}`)
+
+      newIndex=(255).toString(2);
+      attributeValue=objIndex.toString(2);
+    }
 
     x.attribute = parseInt(attributeValue, 2);
     x.index = parseInt(newIndex, 2);
@@ -227,11 +242,17 @@ const getTotalObjects = (
     );
 
     objects.forEach((object: ITiledMapObjectGroupObject) => {
+      const column = Math.floor(Number(object.x)/8);
+      const row = Math.floor(Number(object.y)/8);
+      const mapColumnCount = Math.floor(executionData.mapWidth);
       var data: any = {
         x: Math.floor(Number(object.x)),
         y: Math.floor(Number(object.y)),
         id: Number(object.id),
+        tileIndex:  column+row*mapColumnCount
       };
+
+      console.log("object at index: "+data.tileIndex)
 
       // Apply default value to all properties to things
       executionData.objectFields.forEach((field) => {

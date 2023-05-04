@@ -1,8 +1,9 @@
-import { ExecutionData } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, InputFileFormat } from "../models/tiled-gameboy-tool-types";
 
-export const getDefaultExecutionData = (tmxFilePath:string,processArguments:string[]):ExecutionData=>{
+export const getDefaultExecutionData = (processArguments:string[]):ExecutionData=>{
     return {
         features: [],
+        inputFileFormat:InputFileFormat.None,
         processArguments:processArguments,
         objectStructName: null,
         objectGroups: [],
@@ -23,7 +24,7 @@ export const getDefaultExecutionData = (tmxFilePath:string,processArguments:stri
         objectFields:[],
         objectsOutput:false,
         outputDirectory: process.env.PWD||process.cwd(),
-        inputFile: tmxFilePath,
+        inputFile: "",
         identifier: "",
         exportType: "gbdk",
       };

@@ -4,6 +4,7 @@ import {
 } from "../../../models/tiled-gameboy-tool-types";
 import { sep } from "path";
 import { getExecutionBankPragma } from "../../code-gen.utils";
+import { splitArrayIntoRows } from "../../array.utils";
 
 
 
@@ -18,6 +19,8 @@ export const getGBDKExportCContents = (
   const outputDataAttributes = executionData.tilemapAttributes.map((x) => {
       return "0x" + x.toString(16)
   });
+  var mappedRows = splitArrayIntoRows(executionData.finalItems,executionData.mapWidth)
+  var mappedRowsAttributes = splitArrayIntoRows(executionData.tilemapAttributes,executionData.mapWidth)
 
   /**
    * There is no banked specified if the user doesnt pass "autobanked", or an integer
@@ -36,11 +39,11 @@ export const getGBDKExportCContents = (
 BANKREF(${executionData.identifier})
 
 const unsigned char ${executionData.identifier}_map[${tileCount}] = {
-	${outputData.join(",")}
+  ${mappedRows.map(x=>"\t"+x.map(y=>"0x"+y.index.toString(16)).join(", ")).join("\n")}
 };
 
 const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] = {
-	${outputDataAttributes.join(",")}
+  ${mappedRowsAttributes.map(x=>"\t"+x.map(y=>"0x"+y.toString(16)).join(", ")).join("\n")}
 };
 
     

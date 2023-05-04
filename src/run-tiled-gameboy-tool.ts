@@ -1,4 +1,4 @@
-import { ExecutionData } from "./models/tiled-gameboy-tool-types";
+import { ExecutionData, InputFileFormat } from "./models/tiled-gameboy-tool-types";
 import fs from 'fs';
 import {extname,sep} from 'path'
 import { readProcessArguments } from './actions/arguments.action';
@@ -22,36 +22,18 @@ export default (processArguments:string[])=>{
         process.exit(400);
     }
 
-    const inputFile = getAbsoluteUrl(processArguments[processArguments.length-1]);
+    // Get our execution data with our tmx file
+    var executionData: ExecutionData = getDefaultExecutionData(processArguments)
 
-    /**
-     * Make sure a file exists for the final argument
-     */
-    if(!fs.existsSync(inputFile)){
+    // 1. Process the arguments
+    // 2. Process tile data
+    // 3. Export data
+    readProcessArguments(executionData);
+    
+    switch(executionData.inputFileFormat){
+        case InputFileFormat.Tiled: processTiledTMXFile(executionData); break;
 
-        console.log("File does not exist: "+inputFile);
-        process.exit(404);
     }
-
-    var tmxFiles:string[] = getTiledTMXFiles(inputFile)
-
-    /**
-     * Run the execution logic for each file in our list
-     */
-    tmxFiles.forEach(tmxFilePath=>{
-
-        console.log("Processing: "+tmxFilePath);
-
-        // Get our execution data with our tmx file
-        var executionData: ExecutionData = getDefaultExecutionData(tmxFilePath,processArguments)
-
-        // 1. Process the arguments
-        // 2. Process tile data
-        // 3. Export data
-        readProcessArguments(executionData);
-        processTiledTMXFile(executionData);
-        exportExecutionData(executionData);
-
-    })
+    exportExecutionData(executionData);
 
 }
