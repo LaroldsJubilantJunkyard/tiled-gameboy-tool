@@ -18,7 +18,7 @@ export const getGBDKExportCContents = (
   /**
    * There is no banked specified if the user doesnt pass "autobanked", or an integer
    */
-  const bankData = getExecutionBankPragma(executionData);
+  const bankData = getExecutionBankPragma(executionData.bank);
 
   const exportCContent = 
 `${bankData}
