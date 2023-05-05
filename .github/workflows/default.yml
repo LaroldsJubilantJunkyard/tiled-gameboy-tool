@@ -26,4 +26,8 @@ jobs:
       run: |
         npm install
         npm test
+        mkdir dist
+        mkdir dist/windows
+        mkdir dist/linux
+        mkdir dist/macos
         npm run build:package
