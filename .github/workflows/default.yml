@@ -24,6 +24,7 @@ jobs:
 
     - name: Build
       run: |
+        npm install -g pkg
         npm install
         npm test
         mkdir dist
