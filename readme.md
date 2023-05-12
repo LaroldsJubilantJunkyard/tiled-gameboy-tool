@@ -5,6 +5,18 @@ This tool was written to help modern gameboy game developers create games easier
 You can download GBDK-2020 [here](https://github.com/gbdk-2020/gbdk-2020)
 You can download RGBDS [here](https://rgbds.gbdev.io/)
 
+# Prerequisites
+
+* node
+* npm
+
+# Build 
+
+```
+npm install
+npm run build
+```
+
 ## Arguments
 
 
