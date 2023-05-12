@@ -56,8 +56,8 @@ export const getGBDKExportHContents = (
 #define ${executionData.identifier}_WIDTH ${executionData.mapWidth}
 #define ${executionData.identifier}_HEIGHT ${executionData.mapHeight}
 
-const unsigned char ${executionData.identifier}_map[${tileCount}];
-const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] ;
+extern const unsigned char ${executionData.identifier}_map[${tileCount}];
+extern const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] ;
 `;
   return exportHContent;
 };

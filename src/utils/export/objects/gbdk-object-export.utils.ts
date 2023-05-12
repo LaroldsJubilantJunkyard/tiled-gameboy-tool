@@ -37,7 +37,7 @@ const getGBDKObjectHExport = (executionData:ExecutionData)=>{
 
 ${getStructDataString(executionData)}
 
-const ${objectStructName} ${executionData.identifier}Objects[${executionData.totalObjects.length}];
+extern const ${objectStructName} ${executionData.identifier}Objects[${executionData.totalObjects.length}];
 
 ${executionData.objectStrings.map(x=>"const unsigned char *"+x.name+";").join("\n")}`;
 }
