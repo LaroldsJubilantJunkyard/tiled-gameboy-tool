@@ -31,11 +31,11 @@ export const getGBDKExportCContents = (
 BANKREF(${executionData.identifier})
 
 const unsigned char ${executionData.identifier}_map[${tileCount}] = {
-  ${mappedRows.map(x=>"\t"+x.map(y=>"0x"+y.index.toString(16)).join(", ")).join("\n")}
+  ${mappedRows.map(x=>"\t"+x.map(y=>"0x"+y.index.toString(16)).join(", ")).join(",\n")}
 };
 
 const unsigned char ${executionData.identifier}_map_attributes[${tileCount}] = {
-  ${mappedRowsAttributes.map(x=>"\t"+x.map(y=>"0x"+y.toString(16)).join(", ")).join("\n")}
+  ${mappedRowsAttributes.map(x=>"\t"+x.map(y=>"0x"+y.toString(16)).join(", ")).join(",\n")}
 };
 `;
 
