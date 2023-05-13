@@ -19,7 +19,7 @@ export function readXMLFileAsJson<T>(file:string):T{
 export function getAbsoluteUrl(url:string,baseDir:string|null=null):string{
 
     // Use the current working directory if base directory is provided
-    if(baseDir==null)baseDir=__dirname;
+    if(baseDir==null)baseDir=process.cwd();
 
     // Return things as-is, if it's already absolute
     return isAbsolute(url)

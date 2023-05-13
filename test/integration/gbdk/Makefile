@@ -20,7 +20,7 @@ GAMEBOY_TILEMAP_TOOL = ../../../dist/windows/tiled-gameboy-tool.exe
 PROJECTNAME    = Example
 
 BINS	    = $(PROJECTNAME).gb
-CSOURCES   := $(wildcard src/*.c) $(wildcard gen/*.c)
+CSOURCES   = $(wildcard src/*.c) $(wildcard gen/*.c)
 
 all: $(BINS)
 
