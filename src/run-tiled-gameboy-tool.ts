@@ -2,7 +2,8 @@ import { ExecutionData, InputFileFormat } from "./models/tiled-gameboy-tool-type
 import { readProcessArguments } from './actions/arguments.action';
 import { exportExecutionData } from "./actions/export.action";
 import { processTiledTMXFile } from "./actions/process-tiled.action";
-import { getDefaultExecutionData } from "./utils/execution.utils";
+import { getDefaultExecutionData, getExecutionInputFileFormat } from "./utils/execution.utils";
+import { processLDTKFile } from "./actions/process-ldtk.action";
 
 /**
  * The primary execution logic has been isolated into a function so it can be called from tests
@@ -26,8 +27,10 @@ export default (processArguments:string[])=>{
 
     readProcessArguments(executionData);
     
-    switch(executionData.inputFileFormat){
+    switch(getExecutionInputFileFormat(executionData)){
         case InputFileFormat.Tiled: processTiledTMXFile(executionData); break;
+        case InputFileFormat.LDtk: processLDTKFile(executionData); break;
+
 
         // If a input type isn't specified
         default: 
@@ -35,7 +38,7 @@ export default (processArguments:string[])=>{
             // Return an error
             console.error(`input file not specified`);
             console.error(`Used '--tiled <file-name>' or '--ldtk <file-name>'`);
-            process.exit();
+            process.exit(400);
 
     }
     exportExecutionData(executionData);

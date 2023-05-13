@@ -52,8 +52,8 @@ export const readProcessArguments = (executionData: ExecutionData) => {
     } else if (arg == "--object-field") {
       // add the object field
       // The next argument will be the name & type respectively
-      const name: string = executionData.processArguments[++i];
       const type: string = executionData.processArguments[++i];
+      const name: string = executionData.processArguments[++i];
 
       // Make sure we have a proper type
       if (getObjectFieldDeclaration({ name, type }) == "") {

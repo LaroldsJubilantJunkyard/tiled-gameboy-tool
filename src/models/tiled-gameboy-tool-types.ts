@@ -24,7 +24,13 @@ export interface ExportListItem{
     extension:string;
     contents:(string)[];
 }
-
+export interface ExportObject{
+    x:number;
+    y:number;
+    id:number;
+    tileIndex:number;
+    customData:any;
+}
 export enum InputFileFormat {None,Tiled, LDtk}
 
 export interface ExecutionData{
@@ -35,7 +41,7 @@ export interface ExecutionData{
     solidMap:number[];
     tilemapAttributes:number[];
     objectStrings:ObjectString[]
-    totalObjects:any[];
+    totalObjects:ExportObject[];
     objectGroups:ITiledMapObjectGroup[];
     features:Features[]
     mapWidth:number;

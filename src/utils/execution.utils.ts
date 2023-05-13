@@ -1,5 +1,13 @@
 import { ExecutionData, InputFileFormat } from "../models/tiled-gameboy-tool-types";
 
+
+/**
+ * Get's the input file format for the execution data
+ */
+export const getExecutionInputFileFormat = (executionData:ExecutionData)=>{
+  return executionData.inputFileFormat
+}
+
 export const getDefaultExecutionData = (processArguments:string[]):ExecutionData=>{
     return {
         features: [],
@@ -9,7 +17,7 @@ export const getDefaultExecutionData = (processArguments:string[]):ExecutionData
         objectGroups: [],
         tilemapAttributes: [],
         solidMap:[],
-        enableObjects:true,
+        enableObjects:false,
         finalItems: [],
         mapHeight: 0,
         mapWidth: 0,

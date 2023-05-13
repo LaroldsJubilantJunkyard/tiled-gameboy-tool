@@ -1,3 +1,7 @@
 node_modules/
 dist/
 build/
+test/integration/gbdk/gen/
+test/integration/gbdk/obj/
+test/integration/rgbds/gen/
+test/integration/rgbds/obj/

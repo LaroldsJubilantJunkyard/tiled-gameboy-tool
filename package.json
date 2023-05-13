@@ -6,7 +6,9 @@
   "bin": "build/index.js",
   "scripts": {
     "test": "jest",
-    "test:node": "npx tsc && node build/index.js --enable-objects --output-dir dist --tiled assets/World1Area1.tmx",
+    "test:gbdk": "npx tsc && node build/index.js --gbdk --enable-objects --object-field string gbdkString.dialogue --output-dir test/gbdk --tiled assets/World1Area1.tmx",
+    "test:rgbds": "npx tsc && node build/index.js --rgbds --enable-objects --object-field string gbdkString.dialogue --output-dir test/rgbds --tiled assets/World1Area1.tmx",
+    "test:gbdk:ldtk": "npx tsc && node build/index.js --gbdk --enable-objects --object-field string gbdkString.dialogue --output-dir test/rgbds --ldtk assets/ldtk-test-project.ldtk",
     "build": "npx tsc",
     "build:package": "npm run build && npm run package",
     "package": "npm run package:windows && npm run package:linux && npm run package:macos",
@@ -23,6 +25,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jimp": "^0.2.28",
+    "jimp": "^0.22.7",
+    "ldtk": "^0.8.7",
     "nexe": "^4.0.0-rc.2",
     "xml2json": "^0.12.0"
   },

@@ -37,9 +37,9 @@ const getGBDKObjectHExport = (executionData:ExecutionData)=>{
 
 ${getStructDataString(executionData)}
 
-const ${objectStructName} ${executionData.identifier}Objects[${executionData.totalObjects.length}];
+extern const ${objectStructName} ${executionData.identifier}Objects[${executionData.totalObjects.length}];
 
-${executionData.objectStrings.map(x=>"const unsigned char *"+x.name+";").join("\n")}`;
+${executionData.objectStrings.map(x=>"extern const unsigned char *"+x.name+";").join("\n")}`;
 }
 
 
@@ -48,7 +48,7 @@ const getGBDKObjectCExport = (executionData:ExecutionData)=>{
     
     const stringFields:ObjectField[] = executionData.objectFields.filter(x=>x.type=="string");
     const stringsArrays:any[] = executionData.totalObjects.map(obj=>{
-        return stringFields.map(str=>{return {content:obj[str.name],identifier:getIdentifierForString("object_"+obj.id+"_"+str.name)}}).filter(x=>x.content!="")
+        return stringFields.map(str=>{return {content:obj.customData[str.name],identifier:getIdentifierForString("object_"+obj.id+"_"+str.name)}}).filter(x=>x.content!="")
     });
     const strings:any[] = [].concat.apply([],stringsArrays);
 
@@ -62,7 +62,7 @@ const getGBDKObjectCExport = (executionData:ExecutionData)=>{
         
         // Get fields that are not 'x', 'y', or 'id'
         // We will manually map those in order
-        const otherFields = Object.keys(totalObject).filter(x=>x!="y"&&x!="x"&&x!="id").map(x=>{
+        const otherFields = Object.keys(totalObject.customData).map(x=>{
             const field = executionData.objectFields.find(y=>y.name==x)
 
             // If we found a field with this name
@@ -72,7 +72,7 @@ const getGBDKObjectCExport = (executionData:ExecutionData)=>{
                 if(field.type=="string"){
 
                     // Look for the string in the string list
-                    var str = strings.find(z=>z.content==totalObject[x])
+                    var str = strings.find(z=>z.content==totalObject.customData[x])
 
                     // Use zero if we couldn't find it
                     if(!str)return 0
@@ -80,11 +80,12 @@ const getGBDKObjectCExport = (executionData:ExecutionData)=>{
                     // We'll plainly output the identifier
                     return str.identifier
                 }
+                return totalObject.customData[x]
             }
-            return totalObject[x]
-        }).join(",")
+            return null
+        }).filter(z=>z!=null)
 
-        return `{${totalObject.y},${totalObject.x},${totalObject.id},${otherFields}}`
+        return `{${[totalObject.y,totalObject.x,totalObject.id,...otherFields].join(",")}}`
     })
     
     return `
@@ -92,7 +93,7 @@ ${strings.map(x=>`const unsigned char *${x.identifier}=\"${x.content}\";`).join(
 
 const ${objectStructName} ${executionData.identifier}Objects[ ${executionData.totalObjects.length}]={
 
-    ${mappedObjects.join(",\n")}
+\t${mappedObjects.join(",\n\t")}
 };`
 }
 

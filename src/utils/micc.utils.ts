@@ -7,3 +7,10 @@
 export const singleItemOrArray = <T>(value:T|T[]):T[]=>{
     return Array.isArray(value) ? value : [value]
 }
+
+export const getColumnAndRow = (index:number,width:number)=>{
+    const mapColumnCount = Math.floor(width);
+    const column = (index%mapColumnCount);
+    const row = Math.floor(index/mapColumnCount);
+    return {column,row}
+}

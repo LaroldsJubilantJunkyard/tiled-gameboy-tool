@@ -1,0 +1,7 @@
+<toplevel>
+    <secondlevel param1="secondlevel-param1">
+        <thirdlevel>content1</thirdlevel>
+        <thirdlevel>content2</thirdlevel>
+        <thirdlevel>content3</thirdlevel>
+    </secondlevel>
+</toplevel>
