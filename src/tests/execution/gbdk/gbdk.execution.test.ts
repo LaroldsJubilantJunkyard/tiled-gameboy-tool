@@ -2,7 +2,7 @@ import {execSync} from 'child_process'
 import {existsSync} from 'fs'
 import {resolve} from 'path'
 
-describe('gbdk intergration tests',()=>{
+describe('gbdk execution tests',()=>{
 
     test('gbdk export',async ()=>{
 

@@ -30,8 +30,8 @@ jobs:
         npm install -g pkg
         npm install
 
-        # skip the integration tests, and perform unit tests
-        npm test -- --testPathIgnorePatterns /test/integration/ --testPathIgnorePatterns /build/ --testPathIgnorePatterns /node_modules/
+        # skip the execution tests, and perform unit tests
+        npm test -- --testPathIgnorePatterns /src/tests/execution/ --testPathIgnorePatterns /build/ --testPathIgnorePatterns /node_modules/
 
         # Make sure we have 'dist' folders for our versions
         mkdir dist
@@ -42,7 +42,6 @@ jobs:
         # Build the code and and package the application
         npm run build:package
 
-        # skip the unit tests, and perform integration tests
-        # integration test omitted for now
+        # skip the unit tests, and perform execution tests (omitted for now)
         # GBDK_HOME=gbdk-linux64/gbdk/
-        # npm test -- --testPathIgnorePatterns /src/ --testPathIgnorePatterns /build/ --testPathIgnorePatterns /node_modules/
+        # npm test -- src/tests/execution/default.execution.test.ts
