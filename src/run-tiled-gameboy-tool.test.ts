@@ -1,4 +1,4 @@
-import { InputFileFormat } from "./models/tiled-gameboy-tool-types";
+import { ExecutionData, InputFileFormat } from "./models/tiled-gameboy-tool-types";
 import {exportExecutionData} from "./actions/export.action";
 import * as ExecutionUtils from "./utils/execution.utils";
 
@@ -6,6 +6,7 @@ import * as runTiledGameboyTool from "./run-tiled-gameboy-tool";
 import { readProcessArguments } from "./actions/arguments.action";
 import { processTiledTMXFile } from "./actions/process-tiled.action";
 import { processLDTKFile } from "./actions/process-ldtk.action";
+import { verifyExecutionData } from "./actions/verify.action";
 
 var mockExit = jest.fn();
 var consoleLog = jest.fn();
@@ -18,6 +19,14 @@ var realConsole:any = null;
 
 jest.mock("./utils/execution.utils")
 jest.mock("./actions/export.action");
+jest.mock("./actions/verify.action",()=>{
+    const originalModule = jest.requireActual('./actions/verify.action');
+    return {
+        _esModule:true,
+        ...originalModule,
+        verifyExecutionData:jest.fn((executionData:ExecutionData)=>true)
+    }
+});
 jest.mock('./actions/arguments.action');
 jest.mock("./actions/process-ldtk.action");
 jest.mock("./actions/process-tiled.action");
@@ -78,6 +87,7 @@ describe("Running the gameboy tool",()=>{
 
         expect(ExecutionUtils.getDefaultExecutionData).toBeCalled()
         expect(readProcessArguments).toBeCalled()
+        expect(verifyExecutionData).toBeCalled()
         expect(processTiledTMXFile).toBeCalled()
         expect(exportExecutionData).toBeCalled()
         
@@ -98,6 +108,7 @@ describe("Running the gameboy tool",()=>{
 
         expect(ExecutionUtils.getDefaultExecutionData).toBeCalled()
         expect(readProcessArguments).toBeCalled()
+        expect(verifyExecutionData).toBeCalled()
         expect(processLDTKFile).toBeCalled()
         expect(exportExecutionData).toBeCalled()
         

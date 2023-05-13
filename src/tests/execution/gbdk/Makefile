@@ -31,7 +31,7 @@ prepare: clean
 png2asset: prepare
 	$(PNG2ASSET) ./res/World1Tileset.png -c ./gen/World1Tileset.c -map -noflip
 	$(PNG2ASSET) ./res/Enemies.png -c ./gen/Enemies.c -sh 16 -sw 18
-	$(GAMEBOY_TILEMAP_TOOL) --gbdk --tiled ./res/World1Area1.tmx --output-dir ./gen --enable-objects
+	$(GAMEBOY_TILEMAP_TOOL) --gbdk --tiled ./res/World1Area1.tmx --output-dir ./gen --export-objects
 
 compile.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > compile.bat

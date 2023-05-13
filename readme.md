@@ -7,6 +7,18 @@ You can download RGBDS [here](https://rgbds.gbdev.io/)
 
 ## Arguments
 
+TODO
 
+--tiled <tiled-tmx-file>
+--ldtk <ldtk-file>
+-d <directory>, --output-dir <directory>
+-o, --export-objects
+-id, --identifier <identifier>
+--object-field <type> <name>
+-b <bank>, --bank <bank>
+-sm, --export-solid-map
+--gbdk 
+--rgbds
+--offset <offset-value>
 
 ## Examples

@@ -1,7 +1,12 @@
 node_modules/
 dist/
 build/
-test/integration/gbdk/gen/
-test/integration/gbdk/obj/
-test/integration/rgbds/gen/
-test/integration/rgbds/obj/
+
+# ignore generated folders for the integration tests
+src/tests/integration/gen/
+
+# ignore generated folders for the execution tests
+src/tests/execution/gbdk/gen/
+src/tests/execution/gbdk/obj/
+src/tests/execution/rgbds/gen/
+src/tests/execution/rgbds/obj/

@@ -4,12 +4,14 @@ import { exportExecutionData } from "./actions/export.action";
 import { processTiledTMXFile } from "./actions/process-tiled.action";
 import { getDefaultExecutionData, getExecutionInputFileFormat } from "./utils/execution.utils";
 import { processLDTKFile } from "./actions/process-ldtk.action";
+import { verifyExecutionData } from "./actions/verify.action";
 
 /**
  * The primary execution logic has been isolated into a function so it can be called from tests
  * 1. Process the arguments
- * 2. Process editor data
- * 3. Export data
+ * 2. Verify all the data
+ * 3. Process editor data
+ * 4. Export data
  */
 export default (processArguments:string[])=>{
         
@@ -20,17 +22,28 @@ export default (processArguments:string[])=>{
 
         console.log("Not enough arguments passed");
         process.exit(400);
+
+        // neccessary for when process.exit is mocked
+        return;
     }
 
     // Get our execution data with our tmx file
     var executionData: ExecutionData = getDefaultExecutionData(processArguments)
 
     readProcessArguments(executionData);
+
+    // Check our execution data
+    if(!verifyExecutionData(executionData)){
+        
+        process.exit(400);
+
+        // neccessary for when process.exit is mocked
+        return;
+    }
     
     switch(getExecutionInputFileFormat(executionData)){
         case InputFileFormat.Tiled: processTiledTMXFile(executionData); break;
         case InputFileFormat.LDtk: processLDTKFile(executionData); break;
-
 
         // If a input type isn't specified
         default: 
@@ -40,7 +53,11 @@ export default (processArguments:string[])=>{
             console.error(`Used '--tiled <file-name>' or '--ldtk <file-name>'`);
             process.exit(400);
 
+            // neccessary for when process.exit is mocked
+            return;
+
     }
+
     exportExecutionData(executionData);
 
 }
