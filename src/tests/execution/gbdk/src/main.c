@@ -30,8 +30,8 @@ void main(void)
 
                 uint8_t object = world1area1_map_attributes[index];
 
-                uint8_t x = world1area1Objects[object].x+8;
-                uint8_t y = world1area1Objects[object].y+16;
+                uint8_t x = world1area1_objects[object].x+8;
+                uint8_t y = world1area1_objects[object].y+16;
                 sprite+=move_metasprite(Enemies_metasprites[0],0,sprite,x,y);
             }else{
                 set_bkg_tile_xy(i,j,tile);

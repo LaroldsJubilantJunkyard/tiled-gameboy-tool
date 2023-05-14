@@ -43,6 +43,7 @@ export const getRGBDSDefaultExportList =(executionData:ExecutionData,executionDa
 
 export const exportExecutionData = (executionData:ExecutionData)=>{
 
+    console.log(`Exporting ${executionData.levels.length} Levels at: ${executionData.outputDirectory}`)
 
     executionData.levels.forEach(executionDataLevel=>{
 
@@ -80,6 +81,7 @@ export const exportExecutionData = (executionData:ExecutionData)=>{
                     default:break;
                 }
             }
+
 
 
             // Export each of the files provided

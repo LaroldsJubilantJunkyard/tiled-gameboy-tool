@@ -9,6 +9,7 @@ import {
 import { readTiledTMXFile, readTileset } from "../services/tiled.service";
 import { getColumnAndRow, singleItemOrArray } from "../utils/micc.utils";
 import { replaceChar } from "../utils/string.utils";
+import {resolve} from 'path'
 
 export const processTiledTMXFile = async (executionData: ExecutionData) => {
   
@@ -21,7 +22,6 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
   var executionDataLevel: ExecutionDataLevel = {
     finalItems:[],
     identifier:executionData.identifier,
-
     // Get the map size
     mapWidth:Number(tiledTMXFileData.map.width),
     mapHeight:Number(tiledTMXFileData.map.height),
@@ -41,6 +41,8 @@ export const processTiledTMXFile = async (executionData: ExecutionData) => {
 
   // Get tilemap attributes
   getTilemapAttributes(executionData,executionDataLevel);
+
+  executionData.levels= [executionDataLevel]
 };
 
 export const getTilesets = (

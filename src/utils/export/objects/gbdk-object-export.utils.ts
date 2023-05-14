@@ -16,14 +16,14 @@ const getStructDataString =(executionData:ExecutionData,executionDataLevel:Execu
     }else{
 
         return  `
-typedef struct ${executionDataLevel.identifier}_Object {
+typedef struct ${executionDataLevel.identifier}_object {
 
     uint16_t y;
     uint16_t x;
     uint8_t id;
     ${executionData.objectFields.map(getObjectFieldDeclaration).map(x=>'\t'+x).join("\n")}
 
-} ${executionDataLevel.identifier}_Object; `
+} ${executionDataLevel.identifier}_object; `
 
     }
     
@@ -37,7 +37,7 @@ const getGBDKObjectHExport = (executionData:ExecutionData,executionDataLevel:Exe
 
 ${getStructDataString(executionData,executionDataLevel)}
 
-extern const ${objectStructName} ${executionDataLevel.identifier}Objects[${executionDataLevel.totalObjects.length}];
+extern const ${objectStructName} ${executionDataLevel.identifier}_objects[${executionDataLevel.totalObjects.length}];
 
 ${executionData.objectStrings.map(x=>"extern const unsigned char *"+x.name+";").join("\n")}`;
 }
@@ -91,7 +91,7 @@ const getGBDKObjectCExport = (executionData:ExecutionData,executionDataLevel:Exe
     return `
 ${strings.map(x=>`const unsigned char *${x.identifier}=\"${x.content}\";`).join("\n")}
 
-const ${objectStructName} ${executionDataLevel.identifier}Objects[ ${executionDataLevel.totalObjects.length}]={
+const ${objectStructName} ${executionDataLevel.identifier}_objects[ ${executionDataLevel.totalObjects.length}]={
 
 \t${mappedObjects.join(",\n\t")}
 };`

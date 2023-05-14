@@ -6,7 +6,7 @@ describe('gbdk execution tests',()=>{
 
     test('gbdk export',async ()=>{
 
-        execSync("make",{cwd:__dirname})
+        execSync("make all",{cwd:__dirname})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();

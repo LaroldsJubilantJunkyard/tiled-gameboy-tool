@@ -11,7 +11,7 @@ endif
 
 LCC = $(GBDK_HOME)bin/lcc 
 PNG2ASSET = $(GBDK_HOME)bin/png2asset 
-GAMEBOY_TILEMAP_TOOL = ../../../dist/windows/tiled-gameboy-tool.exe
+GAMEBOY_TILEMAP_TOOL = ../../../../dist/windows/tiled-gameboy-tool
 
 # You can uncomment the line below to turn on debug output
 # LCC = $(LCC) -debug

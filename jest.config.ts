@@ -5,6 +5,7 @@ const config: Config.InitialOptions = {
   transform: {
   "^.+\\.tsx?$": "ts-jest",
   },
-  setupFilesAfterEnv: ["jest-os-detection"]
+  setupFilesAfterEnv: ["jest-os-detection"],
+  testPathIgnorePatterns:["/build/","/node_modules/"]
 };
 export default config;

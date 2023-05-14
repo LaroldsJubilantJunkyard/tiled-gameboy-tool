@@ -12,7 +12,7 @@ export const readProcessArguments = (executionData: ExecutionData) => {
     if (arg == "--ldtk") {
       const inputFile = executionData.processArguments[++i];
 
-      executionData.inputFile = inputFile
+      executionData.inputFile = getAbsoluteUrl(inputFile)
       executionData.inputFileFormat = InputFileFormat.LDtk;
 
       // Check if we don't already have an identifier passed in

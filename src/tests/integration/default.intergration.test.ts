@@ -43,7 +43,7 @@ describe('default integration test',()=>{
         // Create out directory if neccessary
         if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
 
-        runTiledGameboyTool(["not","enough"])
+        await runTiledGameboyTool(["not","enough"])
         
         expect(mockExit).toBeCalledWith(400);
         
@@ -53,28 +53,28 @@ describe('default integration test',()=>{
         // Create out directory if neccessary
         if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
 
-        runTiledGameboyTool(["no","input","file"])
+        await runTiledGameboyTool(["no","input","file"])
         
         expect(mockExit).toBeCalledWith(400);
         
     });
     test('exits with 400 when no proper output directory is called',async ()=>{
 
-        runTiledGameboyTool(["irrellevant","irrellevant","--output-dir","./does/not/exist"])
+        await runTiledGameboyTool(["irrellevant","irrellevant","--output-dir","./does/not/exist"])
         
         expect(mockExit).toBeCalledWith(400);
         
     });
     test('exits with 400 when non-existant tiled file is given',async ()=>{
 
-        runTiledGameboyTool(["irrellevant","irrellevant","--tiled","./does/not/exist/tiled.tmx"])
+        await runTiledGameboyTool(["irrellevant","irrellevant","--tiled","./does/not/exist/tiled.tmx"])
         
         expect(mockExit).toBeCalledWith(400);
         
     });
     test('exits with 400 when non-existant ldtk file is given',async ()=>{
 
-        runTiledGameboyTool(["irrellevant","irrellevant","--ldtk","./does/not/exist/ldtk.ldtk"])
+        await runTiledGameboyTool(["irrellevant","irrellevant","--ldtk","./does/not/exist/ldtk.ldtk"])
         
         expect(mockExit).toBeCalledWith(400);
         
@@ -85,7 +85,7 @@ describe('default integration test',()=>{
         // Create out directory if neccessary
         if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
 
-        runTiledGameboyTool(["irrellevant","irrelevant","--gbdk","--tiled","./res/World1Area1.tmx","--output-dir","./gen"])
+        await runTiledGameboyTool(["irrellevant","irrelevant","--gbdk","--tiled","./res/World1Area1.tmx","--output-dir","./gen"])
         
         expect(existsSync(resolve(process.cwd(),"gen","world1area1.c"))).toBeTruthy();
         expect(existsSync(resolve(process.cwd(),"gen","world1area1.h"))).toBeTruthy();
@@ -97,7 +97,7 @@ describe('default integration test',()=>{
         // Create out directory if neccessary
         if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
 
-        runTiledGameboyTool(["irrellevant","irrelevant","--rgbds","--tiled","./res/World1Area1.tmx","--output-dir","./gen"])
+        await runTiledGameboyTool(["irrellevant","irrelevant","--rgbds","--tiled","./res/World1Area1.tmx","--output-dir","./gen"])
         
         expect(existsSync(resolve(process.cwd(),"gen","world1area1.asm"))).toBeTruthy();
         

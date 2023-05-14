@@ -52,13 +52,13 @@ afterEach(() => {
 
 
 describe("Running the gameboy tool",()=>{
-    test("3 arguments are required", ()=>{
+    test("3 arguments are required", async ()=>{
 
-        runTiledGameboyTool.default(["not","three"])
+        await runTiledGameboyTool.default(["not","three"])
 
         expect(mockExit).toBeCalledWith(400)
     })
-    test("fails when no input file type specified", ()=>{
+    test("fails when no input file type specified", async ()=>{
         
         // Make sure to set the none input file format
         // This triggers the failure
@@ -68,14 +68,14 @@ describe("Running the gameboy tool",()=>{
 
         // Pass 3 arguments to avoid the exit for lack of proper arguments
         // The exact params are not handled here, and not necessary
-        runTiledGameboyTool.default(["three","arguments","minimum"])
+        await runTiledGameboyTool.default(["three","arguments","minimum"])
 
         expect(mockedGetDefaultExecutionData).toBeCalled()
         expect(readProcessArguments).toBeCalled()
         expect(mockExit).toBeCalledWith(400)
     })
 
-    test("processTiledTMXFile is called when '--tiled' is specified", ()=>{
+    test("processTiledTMXFile is called when '--tiled' is specified", async ()=>{
 
         // Make sure we force this to return tiled
         // This triggers tiled's action being called
@@ -83,7 +83,7 @@ describe("Running the gameboy tool",()=>{
 
         // Pass 3 arguments to avoid the exit for lack of proper arguments
         // The exact params are not handled here, and not necessary
-        runTiledGameboyTool.default(["three","arguments","minimum"])
+        await runTiledGameboyTool.default(["three","arguments","minimum"])
 
         expect(ExecutionUtils.getDefaultExecutionData).toBeCalled()
         expect(readProcessArguments).toBeCalled()
@@ -96,7 +96,7 @@ describe("Running the gameboy tool",()=>{
         
     });
 
-    test("processLDTKFile is called when '--ldtk' is specified", ()=>{
+    test("processLDTKFile is called when '--ldtk' is specified", async ()=>{
         
         // Make sure we force this to return ldtk
         // This triggers ldtk's action being called
@@ -104,7 +104,7 @@ describe("Running the gameboy tool",()=>{
 
         // Pass 3 arguments to avoid the exit for lack of proper arguments
         // The exact params are not handled here, and not necessary
-        runTiledGameboyTool.default(["three","arguments","minimum"])
+        await runTiledGameboyTool.default(["three","arguments","minimum"])
 
         expect(ExecutionUtils.getDefaultExecutionData).toBeCalled()
         expect(readProcessArguments).toBeCalled()
