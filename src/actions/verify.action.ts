@@ -7,6 +7,7 @@ export const verifyExecutionData = (executionData: ExecutionData) => {
 
   // Make sure we have a valid bank value
   if (
+    executionData.bank &&
     executionData.bank != "AUTOBANKED" &&
     executionData.bank != "NONBANKED" &&
     !Number.isInteger(executionData.bank)

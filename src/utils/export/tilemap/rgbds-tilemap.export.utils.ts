@@ -1,23 +1,23 @@
-import { ExecutionData, ExportListItem } from '../../../models/tiled-gameboy-tool-types'
+import { ExecutionData, ExecutionDataLevel, ExportListItem } from '../../../models/tiled-gameboy-tool-types'
 import { getCodeFileHeader, splitIntoDataRows } from '../../code-gen.utils'
 
-const getRGBDSExportContents = (executionData:ExecutionData)=>{
+const getRGBDSExportContents = (executionData:ExecutionData,executionDataLevel:ExecutionDataLevel)=>{
     
     const writeContent = 
 `${getCodeFileHeader(executionData)}
 
-SECTION "${executionData.identifier}Section", ROM0
+SECTION "${executionDataLevel.identifier}Section", ROM0
 
-${executionData.identifier}_Map::
-${splitIntoDataRows(executionData.finalItems,executionData.mapWidth,(x)=>"$"+x.index.toString(16),"DB",false)}
-${executionData.identifier}_MapEnd::
+${executionDataLevel.identifier}_Map::
+${splitIntoDataRows(executionDataLevel.finalItems,executionDataLevel.mapWidth,(x)=>"$"+x.index.toString(16),"DB",false)}
+${executionDataLevel.identifier}_MapEnd::
 
-${executionData.identifier}_Map_Attributes::
-${splitIntoDataRows(executionData.tilemapAttributes,executionData.mapWidth,(x)=>"$"+x.toString(16),"DB",false)}
-${executionData.identifier}_Map_AttributesEnd::`
+${executionDataLevel.identifier}_Map_Attributes::
+${splitIntoDataRows(executionDataLevel.tilemapAttributes,executionDataLevel.mapWidth,(x)=>"$"+x.toString(16),"DB",false)}
+${executionDataLevel.identifier}_Map_AttributesEnd::`
     return writeContent;
 }
 
-export const getRGBDSExport = (executionData:ExecutionData,exportList: ExportListItem[] ):void=>{
-    exportList[0].contents.push(getRGBDSExportContents(executionData))
+export const getRGBDSExport = (executionData:ExecutionData,executionDataLevel:ExecutionDataLevel,exportList: ExportListItem[] ):void=>{
+    exportList[0].contents.push(getRGBDSExportContents(executionData,executionDataLevel))
 }

@@ -33,19 +33,25 @@ export interface ExportObject{
 }
 export enum InputFileFormat {None,Tiled, LDtk}
 
-export interface ExecutionData{
+export interface ExecutionDataLevel{
+
     finalItems:FinalItems[];
+    tilemapAttributes:number[];
+    solidMap:number[];
+    identifier:string;
+    totalObjects:ExportObject[];
+    mapWidth:number;
+    mapHeight:number
+}
+
+export interface ExecutionData{
     inputFileFormat:InputFileFormat;
     processArguments:string[];
     tilesets:ITiledTileset[];
-    solidMap:number[];
-    tilemapAttributes:number[];
+    levels:ExecutionDataLevel[];
     objectStrings:ObjectString[]
-    totalObjects:ExportObject[];
     objectGroups:ITiledMapObjectGroup[];
     features:Features[]
-    mapWidth:number;
-    mapHeight:number
     enableSolidMap:boolean;
     identifier:string;
     offset:number;

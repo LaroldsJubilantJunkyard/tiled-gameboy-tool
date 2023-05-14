@@ -6,9 +6,9 @@
   "bin": "build/index.js",
   "scripts": {
     "test": "jest",
-    "test:gbdk": "npx tsc && node build/index.js --gbdk --enable-objects --object-field string gbdkString.dialogue --output-dir test/gbdk --tiled assets/World1Area1.tmx",
-    "test:rgbds": "npx tsc && node build/index.js --rgbds --enable-objects --object-field string gbdkString.dialogue --output-dir test/rgbds --tiled assets/World1Area1.tmx",
-    "test:gbdk:ldtk": "npx tsc && node build/index.js --gbdk --enable-objects --object-field string gbdkString.dialogue --output-dir test/rgbds --ldtk assets/ldtk-test-project.ldtk",
+    "test:gbdk": "npx tsc && node build/index.js --gbdk --enable-objects --object-field string gbdkString.dialogue --output-dir dist --tiled src/tests/integration/res/World1Area1.tmx",
+    "test:rgbds": "npx tsc && node build/index.js --rgbds --enable-objects --object-field string gbdkString.dialogue --output-dir dist --tiled src/tests/integration/res/World1Area1.tmx",
+    "test:gbdk:ldtk": "npx tsc && node build/index.js --gbdk --enable-objects --object-field string gbdkString.dialogue --output-dir dist --ldtk src/tests/integration/res/ldtk-test-project.ldtk",
     "build": "npx tsc",
     "build:package": "npm run build && npm run package",
     "package": "npm run package:windows && npm run package:linux && npm run package:macos",

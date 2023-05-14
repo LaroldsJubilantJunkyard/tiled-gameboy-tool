@@ -1,14 +1,14 @@
-import { ExecutionData, ExportListItem } from "../../../models/tiled-gameboy-tool-types"
+import { ExecutionData, ExecutionDataLevel, ExportListItem } from "../../../models/tiled-gameboy-tool-types"
 import { splitArrayIntoRows } from '../../array.utils'
 
-export const getGBDKSolidMapExports = (executionData:ExecutionData,exportList:ExportListItem[])=>{
-    const tileCount = executionData.mapHeight * executionData.mapWidth;
+export const getGBDKSolidMapExports = (executionData:ExecutionData,executionDataLevel:ExecutionDataLevel,exportList:ExportListItem[])=>{
+    const tileCount = executionDataLevel.mapHeight * executionDataLevel.mapWidth;
 
-    const hData = `const uint8_t ${executionData.identifier}_SolidMap[${tileCount}];`;
+    const hData = `const uint8_t ${executionDataLevel.identifier}_SolidMap[${tileCount}];`;
 
     const cData = 
-`const uint8_t ${executionData.identifier}_SolidMap[${tileCount}]={
-${splitArrayIntoRows(executionData.solidMap,executionData.mapWidth).map(x=>`\t${x.join(",")}`).join(",\n")}
+`const uint8_t ${executionDataLevel.identifier}_SolidMap[${tileCount}]={
+${splitArrayIntoRows(executionDataLevel.solidMap,executionDataLevel.mapWidth).map(x=>`\t${x.join(",")}`).join(",\n")}
 };`;
 
     

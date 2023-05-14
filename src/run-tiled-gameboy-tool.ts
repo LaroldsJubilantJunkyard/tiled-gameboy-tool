@@ -13,7 +13,7 @@ import { verifyExecutionData } from "./actions/verify.action";
  * 3. Process editor data
  * 4. Export data
  */
-export default (processArguments:string[])=>{
+export default async (processArguments:string[])=>{
         
     /**
      * Make sure we have at least 3 arguments.
@@ -42,8 +42,8 @@ export default (processArguments:string[])=>{
     }
     
     switch(getExecutionInputFileFormat(executionData)){
-        case InputFileFormat.Tiled: processTiledTMXFile(executionData); break;
-        case InputFileFormat.LDtk: processLDTKFile(executionData); break;
+        case InputFileFormat.Tiled: await processTiledTMXFile(executionData); break;
+        case InputFileFormat.LDtk: await processLDTKFile(executionData); break;
 
         // If a input type isn't specified
         default: 

@@ -1,10 +1,10 @@
-import { ExecutionData, ExportListItem, ExportObject, ObjectField } from '../../../models/tiled-gameboy-tool-types'
+import { ExecutionData, ExecutionDataLevel, ExportListItem, ExportObject, ObjectField } from '../../../models/tiled-gameboy-tool-types'
 
 
-const getRGBDSObjectExportContents = (executionData:ExecutionData)=>{
+const getRGBDSObjectExportContents = (executionData:ExecutionData,executionDataLevel:ExecutionDataLevel)=>{
 
     const stringFields:ObjectField[] = executionData.objectFields.filter(x=>x.type=="string")
-    const stringsArrays:any = executionData.totalObjects.map(obj=>{
+    const stringsArrays:any = executionDataLevel.totalObjects.map(obj=>{
         return stringFields.map(str=>obj.customData[str.name])
     })
     console.log(stringsArrays)
@@ -19,7 +19,7 @@ const getRGBDSObjectExportContents = (executionData:ExecutionData)=>{
         previousLength+=strings[i].length+1
     }
 
-    const objectData= executionData.totalObjects.map(obj=>{
+    const objectData= executionDataLevel.totalObjects.map(obj=>{
         var extraFields=executionData.objectFields.map(field=>{
             if(field.type=="string")return obj.customData[field.name]==""? 255  :  strings.indexOf(obj.customData[field.name])
             else return obj.customData[field.name]
@@ -30,27 +30,27 @@ const getRGBDSObjectExportContents = (executionData:ExecutionData)=>{
         return `\tDB $${obj.y.toString(16).toUpperCase()},$${obj.x.toString(16).toUpperCase()},$${obj.id.toString(16).toUpperCase()}${extraFields}`
     })
 
-    var objectMap = executionData.totalObjects.map((x:ExportObject,i:number)=>(executionData.objectFields.length+3)*i);
+    var objectMap = executionDataLevel.totalObjects.map((x:ExportObject,i:number)=>(executionData.objectFields.length+3)*i);
 
     const stringsMapText = strings.length ==0 ? "" : (
-`${executionData.identifier}_strings_map:: DB ${stringMap.join(",")}
-${executionData.identifier}_strings::
+`${executionDataLevel.identifier}_strings_map:: DB ${stringMap.join(",")}
+${executionDataLevel.identifier}_strings::
 ${strings.map(str=>`\tDB \"${str}\",255`).join("\n")}
 `);
     
     const writeCContent = `
 ${stringsMapText}
 
-${executionData.identifier}_Objects::
+${executionDataLevel.identifier}_Objects::
 ${objectData.join("\n")}
-${executionData.identifier}_ObjectsEnd::
+${executionDataLevel.identifier}_ObjectsEnd::
 
-${executionData.identifier}_Objects_map:: DB ${objectMap.join(",")}
+${executionDataLevel.identifier}_Objects_map:: DB ${objectMap.join(",")}
     `
     return writeCContent;
 }
 
 
-export const getRGBDSObjectExport = (executionData:ExecutionData,exportList:ExportListItem[])=>{
-    exportList[0].contents.push(getRGBDSObjectExportContents(executionData))
+export const getRGBDSObjectExport = (executionData:ExecutionData,executionDataLevel:ExecutionDataLevel,exportList:ExportListItem[])=>{
+    exportList[0].contents.push(getRGBDSObjectExportContents(executionData,executionDataLevel))
 }
