@@ -43,12 +43,12 @@ compile.bat: Makefile
 	@make -sn | sed y/\\//\\\\/ | grep -v make >> compile.bat
 
 # Compile and link all source files in a single call to LCC
-run-gbdk-tiled: png2asset-gbdk-tiled	$(CSOURCES)
-	$(LCC) -Igen -o obj/$(BINS) main.tiled.c $(CSOURCES)
+run-gbdk-tiled: png2asset-gbdk-tiled
+	$(LCC) -Igen -o obj/$(BINS) src/main.tiled.c $(CSOURCES)
 
 # Compile and link all source files in a single call to LCC
-run-gbdk-ldtk: png2asset-gbdk-ldtk	$(CSOURCES)
-	$(LCC) -Igen -o obj/$(BINS) main.ldtk.c $(CSOURCES)
+run-gbdk-ldtk: png2asset-gbdk-ldtk
+	$(LCC) -Igen -o obj/$(BINS) src/main.ldtk.c $(CSOURCES)
 
 clean:
 	rm -f *.o *.lst *.map *.gb *.ihx *.sym *.cdb *.adb *.asm

@@ -4,9 +4,18 @@ import {sep,extname} from 'path'
 import { readXMLFileAsJson } from "../utils/file.utils";
 const parser = require('xml2json');
 
-export function readTiledTMXFile(file:string):ITiledFileData{
+export function readTiledTMXFile(file:string):ITiledFileData|null{
     
-    return readXMLFileAsJson<ITiledFileData>(file);
+    // Make sure the file actually exists
+    if(!fs.existsSync(file))return null;
+
+    try{
+        return readXMLFileAsJson<ITiledFileData>(file);
+    }catch(e){
+        console.log(e)
+        console.log("an error occured while trying to read "+file)
+        return null;
+    }
 }
 
 export function readTileset(file:string):ITiledTilesetFileData{

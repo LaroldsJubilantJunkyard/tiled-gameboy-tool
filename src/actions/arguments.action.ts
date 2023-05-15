@@ -3,6 +3,7 @@ import { getIdentifierForFile } from "../utils/string.utils";
 import { getAbsoluteUrl } from "../utils/file.utils";
 import { LDtk, World } from "ldtk";
 import { readTiledTMXFile } from "../services/tiled.service";
+import { loadLDTKWorld } from "../services/ldtk.service";
 export const readProcessArguments = async (executionData: ExecutionData) => {
 
   executionData.identifier="";
@@ -16,7 +17,7 @@ export const readProcessArguments = async (executionData: ExecutionData) => {
 
       executionData.inputFile = getAbsoluteUrl(inputFile)
       executionData.inputFileFormat = InputFileFormat.LDtk;
-      executionData.ldtkWorld = (await World.loadRaw(executionData.inputFile))
+      executionData.ldtkWorld = await loadLDTKWorld(executionData.inputFile);
 
       // Check if we don't already have an identifier passed in
       if(executionData.identifier.length==0)executionData.identifier = getIdentifierForFile(inputFile);

@@ -1,10 +1,28 @@
-import { ExecutionData, ObjectField } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, InputFileFormat, ObjectField } from "../models/tiled-gameboy-tool-types";
 import { getObjectFieldDeclaration } from "../utils/code-gen.utils";
 import fs from "fs";
 
 export const verifyExecutionData = (executionData: ExecutionData) => {
   var exit = false;
 
+  // If we are using tiled
+  if(executionData.inputFileFormat==InputFileFormat.Tiled){
+
+    // make sure we have a valid value
+    if(executionData.tiledTMXFileData==null) {
+      console.error("Unable to load tiled file at "+executionData.inputFile)
+      exit=true;
+    }
+
+  // If we are using ldtk
+  }else if(executionData.inputFileFormat==InputFileFormat.LDtk){
+
+    // make sure we have a valid value
+    if(executionData.ldtkWorld==null) {
+      console.error("Unable to load LDTK world at "+executionData.inputFile)
+      exit=true;
+    }
+  }
   // Make sure we have a valid bank value
   if (
     executionData.bank &&
