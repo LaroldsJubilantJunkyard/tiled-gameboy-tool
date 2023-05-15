@@ -1,7 +1,9 @@
 import { ExecutionData, InputFileFormat } from "../models/tiled-gameboy-tool-types";
 import { getIdentifierForFile } from "../utils/string.utils";
 import { getAbsoluteUrl } from "../utils/file.utils";
-export const readProcessArguments = (executionData: ExecutionData) => {
+import { LDtk, World } from "ldtk";
+import { readTiledTMXFile } from "../services/tiled.service";
+export const readProcessArguments = async (executionData: ExecutionData) => {
 
   executionData.identifier="";
 
@@ -14,6 +16,7 @@ export const readProcessArguments = (executionData: ExecutionData) => {
 
       executionData.inputFile = getAbsoluteUrl(inputFile)
       executionData.inputFileFormat = InputFileFormat.LDtk;
+      executionData.ldtkWorld = (await World.loadRaw(executionData.inputFile))
 
       // Check if we don't already have an identifier passed in
       if(executionData.identifier.length==0)executionData.identifier = getIdentifierForFile(inputFile);
@@ -22,6 +25,7 @@ export const readProcessArguments = (executionData: ExecutionData) => {
 
       executionData.inputFile = getAbsoluteUrl(inputFile)
       executionData.inputFileFormat = InputFileFormat.Tiled;
+      executionData.tiledTMXFileData = readTiledTMXFile(executionData.inputFile);
 
       // Check if we don't already have an identifier passed in
       if(executionData.identifier.length==0)executionData.identifier = getIdentifierForFile(inputFile);

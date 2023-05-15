@@ -47,8 +47,6 @@ export const getGBDKExportHContents = (
 ): string => {
 
 
-  console.log("executionData in header")
-  console.log(executionData)
   const tileCount = executionDataLevel.mapHeight * executionDataLevel.mapWidth;
 
   const exportHContent = 

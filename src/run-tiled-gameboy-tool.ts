@@ -30,7 +30,8 @@ export default async (processArguments:string[])=>{
     // Get our execution data with our tmx file
     var executionData: ExecutionData = getDefaultExecutionData(processArguments)
 
-    readProcessArguments(executionData);
+    await readProcessArguments(executionData);
+    
 
     // Check our execution data
     if(!verifyExecutionData(executionData)){

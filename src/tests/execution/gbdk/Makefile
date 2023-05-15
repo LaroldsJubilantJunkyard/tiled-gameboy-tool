@@ -20,26 +20,35 @@ GAMEBOY_TILEMAP_TOOL = ../../../../dist/windows/tiled-gameboy-tool
 PROJECTNAME    = Example
 
 BINS	    = $(PROJECTNAME).gb
-CSOURCES   = $(wildcard src/*.c) $(wildcard gen/*.c)
+CSOURCES   = $(wildcard gen/*.c)
 
-all: $(BINS)
+all: run-gbdk-tiled run-gbdk-ldtk
 
 prepare: clean
 	mkdir -p gen
 	mkdir -p obj
 
-png2asset: prepare
+png2asset-gbdk-tiled: prepare
 	$(PNG2ASSET) ./res/World1Tileset.png -c ./gen/World1Tileset.c -map -noflip
 	$(PNG2ASSET) ./res/Enemies.png -c ./gen/Enemies.c -sh 16 -sw 18
 	$(GAMEBOY_TILEMAP_TOOL) --gbdk --tiled ./res/World1Area1.tmx --output-dir ./gen --export-objects
+
+png2asset-gbdk-ldtk: prepare
+	$(PNG2ASSET) ./res/World1Tileset.png -c ./gen/World1Tileset.c -map -noflip
+	$(PNG2ASSET) ./res/Enemies.png -c ./gen/Enemies.c -sh 16 -sw 18
+	$(GAMEBOY_TILEMAP_TOOL) --gbdk --ldtk ./res/ldtk-test-project.ldtk --output-dir ./gen --export-objects
 
 compile.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > compile.bat
 	@make -sn | sed y/\\//\\\\/ | grep -v make >> compile.bat
 
 # Compile and link all source files in a single call to LCC
-$(BINS): png2asset	$(CSOURCES)
-	$(LCC) -Igen -o obj/$@ $(CSOURCES)
+run-gbdk-tiled: png2asset-gbdk-tiled	$(CSOURCES)
+	$(LCC) -Igen -o obj/$(BINS) main.tiled.c $(CSOURCES)
+
+# Compile and link all source files in a single call to LCC
+run-gbdk-ldtk: png2asset-gbdk-ldtk	$(CSOURCES)
+	$(LCC) -Igen -o obj/$(BINS) main.ldtk.c $(CSOURCES)
 
 clean:
 	rm -f *.o *.lst *.map *.gb *.ihx *.sym *.cdb *.adb *.asm

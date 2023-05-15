@@ -1,4 +1,4 @@
-import { World } from "ldtk";
+import { LDtk, World } from "ldtk";
 import { ExecutionData, ExecutionDataLevel, FinalItems } from "../models/tiled-gameboy-tool-types";
 import { Level } from "ldtk/dist/typedef";
 import Jimp from "jimp";
@@ -7,9 +7,11 @@ import { getIdentifierForString, replaceChar } from "../utils/string.utils";
 
 export const processLDTKFile = async (executionData:ExecutionData)=>{
 
-    const ldtdkWorld:any = (await World.loadRaw(executionData.inputFile));
+    const {ldtkWorld}= executionData
 
-    const ldtkLevels:LDtkLevelData[] = ldtdkWorld.levels.map((level:Level)=>processLDTKLevel(executionData,ldtdkWorld,level));
+    if(ldtkWorld==null)return;
+
+    const ldtkLevels:LDtkLevelData[] = ldtkWorld.levels.map((level:Level)=>processLDTKLevel(executionData,ldtkWorld,level));
 
     const finalItems = ldtkLevels[0].indices.map((x):FinalItems=>{ return {index:x,tileLayer:0,attribute:0,tileIndex:x}})
     const tilemapAttributes = ldtkLevels[0].flips.map((x:LDtkTileFlips):number=>{
@@ -38,7 +40,7 @@ export const processLDTKFile = async (executionData:ExecutionData)=>{
 }
 
 
-export const processLDTKLevel = (executionData:ExecutionData,ldtdkWorld:World,ltdkLevel:Level):LDtkLevelData=>{
+export const processLDTKLevel = (executionData:ExecutionData,ldtkWorld: LDtk.World,ltdkLevel:Level):LDtkLevelData=>{
 
    const width = Math.floor(ltdkLevel.pxWid/8);
    const height = Math.floor(ltdkLevel.pxHei/8);

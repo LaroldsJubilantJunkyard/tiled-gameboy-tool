@@ -1,4 +1,5 @@
-import { IAllTilesData, ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-types";
+import { LDtk, World } from "ldtk";
+import { IAllTilesData, ITiledFileData, ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-types";
 
 export interface FinalItems{
     index:number;
@@ -46,7 +47,9 @@ export interface ExecutionDataLevel{
 
 export interface ExecutionData{
     inputFileFormat:InputFileFormat;
+    tiledTMXFileData:ITiledFileData|null;
     processArguments:string[];
+    ldtkWorld: LDtk.World|null
     tilesets:ITiledTileset[];
     levels:ExecutionDataLevel[];
     objectStrings:ObjectString[]

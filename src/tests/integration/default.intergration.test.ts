@@ -1,5 +1,5 @@
 import {execSync} from 'child_process'
-import {existsSync,mkdirSync} from 'fs'
+import {existsSync,mkdirSync,rmSync} from 'fs'
 import {resolve} from 'path'
 import runTiledGameboyTool from '../../run-tiled-gameboy-tool'
 
@@ -23,6 +23,9 @@ beforeEach(() => {
 
     // Use the current directory as the workign directory
     global.process = { ...realProcess, exit: mockExit,cwd:()=>__dirname };
+
+    // Create out directory if neccessary
+    if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
   });
 
 afterEach(() => {
@@ -31,6 +34,9 @@ afterEach(() => {
     global.process = realProcess;
     global.console = realConsole;
     jest.clearAllMocks();
+
+    // Clear the gen directory
+    rmSync(resolve(process.cwd(),"gen"), { recursive: true, force: true });
 });
 
 
@@ -40,18 +46,12 @@ describe('default integration test',()=>{
 
     test('exits with 400 without enough parameters',async ()=>{
 
-        // Create out directory if neccessary
-        if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
-
         await runTiledGameboyTool(["not","enough"])
         
         expect(mockExit).toBeCalledWith(400);
         
     });
     test('exits with 400 when no input file is specified',async ()=>{
-
-        // Create out directory if neccessary
-        if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
 
         await runTiledGameboyTool(["no","input","file"])
         
@@ -82,9 +82,6 @@ describe('default integration test',()=>{
 
     test('generates world1area1 .c and .h files for gbdk',async ()=>{
 
-        // Create out directory if neccessary
-        if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
-
         await runTiledGameboyTool(["irrellevant","irrelevant","--gbdk","--tiled","./res/World1Area1.tmx","--output-dir","./gen"])
         
         expect(existsSync(resolve(process.cwd(),"gen","world1area1.c"))).toBeTruthy();
@@ -94,12 +91,26 @@ describe('default integration test',()=>{
 
     test('generates world1area1 .asm files for rgbds',async ()=>{
 
-        // Create out directory if neccessary
-        if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
-
         await runTiledGameboyTool(["irrellevant","irrelevant","--rgbds","--tiled","./res/World1Area1.tmx","--output-dir","./gen"])
         
         expect(existsSync(resolve(process.cwd(),"gen","world1area1.asm"))).toBeTruthy();
+        
+    });
+
+    test('generates ldtk_test_project .c and .h files for each level for gbdk',async ()=>{
+
+        await runTiledGameboyTool(["irrellevant","irrelevant","--gbdk","--ldtk","./res/ldtk-test-project.ldtk","--output-dir","./gen"])
+        
+        expect(existsSync(resolve(process.cwd(),"gen","ldtk_test_project_autolayer.c"))).toBeTruthy();
+        expect(existsSync(resolve(process.cwd(),"gen","ldtk_test_project_autolayer.h"))).toBeTruthy();
+        
+    });
+
+    test('generates ldtk_test_project .asm files for each level for rgbds',async ()=>{
+
+        await runTiledGameboyTool(["irrellevant","irrelevant","--rgbds","--ldtk","./res/ldtk-test-project.ldtk","--output-dir","./gen"])
+        
+        expect(existsSync(resolve(process.cwd(),"gen","ldtk_test_project_autolayer.asm"))).toBeTruthy();
         
     });
 })

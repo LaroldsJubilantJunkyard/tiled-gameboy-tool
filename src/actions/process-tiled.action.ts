@@ -12,12 +12,10 @@ import { replaceChar } from "../utils/string.utils";
 import {resolve} from 'path'
 
 export const processTiledTMXFile = async (executionData: ExecutionData) => {
-  
-  // Read the TMX file
-  var tiledTMXFileData: ITiledFileData = readTiledTMXFile(
-    executionData.inputFile
-  );
 
+  const {tiledTMXFileData} =executionData
+  
+  if(tiledTMXFileData==null)return;
   
   var executionDataLevel: ExecutionDataLevel = {
     finalItems:[],
