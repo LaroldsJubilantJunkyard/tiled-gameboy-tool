@@ -8,14 +8,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
 
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
+        os: [macos-latest,ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v3
+
+    # ==== OS Specific Dependencies ====
+    - name: Linux Depends
+      run: |
+        # Pull in GBDK-2020 4.1.0
+        curl -Lo gbdk-linux64.tar.gz https://github.com/gbdk-2020/gbdk-2020/releases/download/4.1.1/gbdk-linux64.tar.gz
+        tar xvfz gbdk-linux64.tar.gz
+        export GBDK_HOME=`pwd`/gbdk/
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -42,6 +51,6 @@ jobs:
         # Build the code and and package the application
         npm run build:package
 
-        # skip the unit tests, and perform execution tests (omitted for now)
-        # GBDK_HOME=gbdk-linux64/gbdk/
-        # npm test -- src/tests/execution/default.execution.test.ts
+        # skip the unit tests, and perform execution tests
+        export GBDK_HOME=`pwd`/gbdk/
+        npm test -- src/tests/execution/default.execution.test.ts
