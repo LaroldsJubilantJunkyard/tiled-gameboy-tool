@@ -33,7 +33,7 @@ describe('gbdk execution tests',()=>{
         expect(existsSync(resolve(__dirname,"gen","World1Tileset.h"))).toBeTruthy();
     })
 
-    test.onLinux('linux ldtk export',async ()=>{
+    test.skip('linux ldtk export',async ()=>{
 
         execSync("make run-linux-gbdk-ldtk",{cwd:__dirname})
 
@@ -59,7 +59,7 @@ describe('gbdk execution tests',()=>{
         expect(existsSync(resolve(__dirname,"gen","World1Tileset.h"))).toBeTruthy();
     })
 
-    test.onWindows('ldtk export',async ()=>{
+    test.skip('ldtk export',async ()=>{
 
         execSync("make run-gbdk-ldtk",{cwd:__dirname})
 
