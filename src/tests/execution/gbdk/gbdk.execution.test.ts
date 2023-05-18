@@ -20,9 +20,14 @@ afterEach(() => {
 
 describe('gbdk execution tests',()=>{
 
+    test.onLinux('linux executable exists',async ()=>{
+
+        expect(existsSync(resolve(__dirname,"..","..","..","..","dist","linux","tiled-gameboy-tool"))).toBeTruthy();
+    })
+
     test.onLinux('linux tiled export',async ()=>{
 
-        execSync("make run-linux-gbdk-tiled",{cwd:__dirname})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -35,7 +40,7 @@ describe('gbdk execution tests',()=>{
 
     test.skip('linux ldtk export',async ()=>{
 
-        execSync("make run-linux-gbdk-ldtk",{cwd:__dirname})
+        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -46,9 +51,14 @@ describe('gbdk execution tests',()=>{
         expect(existsSync(resolve(__dirname,"gen","ldtk_test_project_world_level_1.h"))).toBeTruthy();
     })
 
-    test.onWindows('tiled export',async ()=>{
+    test.onWindows('windows executable exists',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname})
+        expect(existsSync(resolve(__dirname,"..","..","..","..","dist","windows","tiled-gameboy-tool.exe"))).toBeTruthy();
+    })
+
+    test.onWindows('windows tiled export',async ()=>{
+
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows"}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -59,9 +69,41 @@ describe('gbdk execution tests',()=>{
         expect(existsSync(resolve(__dirname,"gen","World1Tileset.h"))).toBeTruthy();
     })
 
-    test.skip('ldtk export',async ()=>{
+    test.skip('windows ldtk export',async ()=>{
 
-        execSync("make run-gbdk-ldtk",{cwd:__dirname})
+        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows"}})
+
+        expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","Enemies.h"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","ldtk_test_project_autolayer.c"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","ldtk_test_project_autolayer.h"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","ldtk_test_project_world_level_1.c"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","ldtk_test_project_world_level_1.h"))).toBeTruthy();
+    })
+
+    test.onLinux('macos executable exists',async ()=>{
+
+        expect(existsSync(resolve(__dirname,"..","..","..","..","dist","macos","tiled-gameboy-tool"))).toBeTruthy();
+    })
+
+
+    test.onMac('macos tiled export',async ()=>{
+
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos"}})
+
+        expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","Enemies.h"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","world1area1.c"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","world1area1.h"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","World1Tileset.c"))).toBeTruthy();
+        expect(existsSync(resolve(__dirname,"gen","World1Tileset.h"))).toBeTruthy();
+    })
+
+    test.skip('macos ldtk export',async ()=>{
+
+        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos"}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
