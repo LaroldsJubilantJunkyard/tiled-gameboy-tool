@@ -23,7 +23,7 @@ CSOURCES   = $(wildcard gen/*.c)
 
 all: run-gbdk-tiled run-gbdk-ldtk
 
-prepare: clean
+prepare: 
 	mkdir -p gen
 	mkdir -p obj
 
@@ -51,7 +51,6 @@ run-gbdk-ldtk: png2asset-gbdk-ldtk
 	$(LCC) -Igen -o obj/$(BINS) src/main.ldtk.c $(CSOURCES)
 
 clean:
-	rm -f *.o *.lst *.map *.gb *.ihx *.sym *.cdb *.adb *.asm
 	rm -f  gen/*.*
 	rm -f  obj/*.*
 
