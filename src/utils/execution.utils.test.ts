@@ -27,6 +27,7 @@ describe('execution utilities',()=>{
             enableObjects:false,
             levels:[],
             ldtkWorld:null,
+            embedObjectsInTilemap:false,
             tiledTMXFileData:null,
             allTiles:{},
             tilesets: [],

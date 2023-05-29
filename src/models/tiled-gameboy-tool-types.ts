@@ -52,7 +52,8 @@ export interface ExecutionData{
     ldtkWorld: LDtk.World|null
     tilesets:ITiledTileset[];
     levels:ExecutionDataLevel[];
-    objectStrings:ObjectString[]
+    objectStrings:ObjectString[];
+    embedObjectsInTilemap:boolean;
     objectGroups:ITiledMapObjectGroup[];
     features:Features[]
     enableSolidMap:boolean;

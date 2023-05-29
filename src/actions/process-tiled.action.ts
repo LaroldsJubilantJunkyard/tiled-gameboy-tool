@@ -149,7 +149,7 @@ export const flattenTiledLayers = (
 
     var objIndex = executionDataLevel.totalObjects.findIndex(y=>y.tileIndex==x.tileIndex);
 
-    if(objIndex!=-1 && executionData.enableObjects){
+    if(objIndex!=-1 && executionData.enableObjects && executionData.embedObjectsInTilemap){
       console.log(`Placing ${executionDataLevel.totalObjects[objIndex]} at ${x.tileIndex}`)
 
       newIndex=(255).toString(2);

@@ -37,7 +37,10 @@ export const readProcessArguments = async (executionData: ExecutionData) => {
     } else if (arg == "-obj" || arg == "--export-objects") {
       // Add the solid map feature
       executionData.enableObjects = true;
-    } else if (arg == "-id" || arg == "--identifier") {
+    }  else if (arg == "--embed-objects") {
+      // Embed objects inside of map
+      executionData.embedObjectsInTilemap = true;
+    }else if (arg == "-id" || arg == "--identifier") {
       // manually set the identifier
       executionData.identifier = executionData.processArguments[++i];
     } else if (arg == "--object-struct-name") {
