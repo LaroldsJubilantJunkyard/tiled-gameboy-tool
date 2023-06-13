@@ -15,7 +15,7 @@ PROJECTNAME    = rgbds-tiled-rom
 
 BINS	    = $(PROJECTNAME).gb
 
-all: run-rgbds-tiled
+all: prepare run-rgbds-tiled
 
 prepare: 
 	mkdir -p $(GENDIR)
