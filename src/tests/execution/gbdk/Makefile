@@ -9,6 +9,10 @@ ifndef GBDK_HOME
 	GBDK_HOME = C:/gbdk/
 endif
 
+ifndef EXECUTION_PLATFORM
+	EXECUTION_PLATFORM = windows
+endif
+
 LCC = $(GBDK_HOME)bin/lcc 
 PNG2ASSET = $(GBDK_HOME)bin/png2asset 
 GAMEBOY_TILEMAP_TOOL = ../../../../dist/$(EXECUTION_PLATFORM)/tiled-gameboy-tool 
@@ -21,12 +25,11 @@ PROJECTNAME    = Example
 BINS	    = $(PROJECTNAME).gb
 CSOURCES   = $(wildcard gen/*.c)
 
-all: run-gbdk-tiled run-gbdk-ldtk
+all: prepare run-gbdk-tiled run-gbdk-ldtk
 
 prepare: 
 	mkdir -p gen
 	mkdir -p obj
-
 
 png2asset-gbdk-tiled: prepare
 	$(PNG2ASSET) ./res/World1Tileset.png -c ./gen/World1Tileset.c -map -noflip

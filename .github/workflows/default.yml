@@ -54,3 +54,4 @@ jobs:
         # skip the unit tests, and perform execution tests
         export GBDK_HOME=`pwd`/gbdk/
         npm test -- src/tests/execution/gbdk/gbdk.execution.test.ts
+        npm test -- src/tests/execution/rgbds/rgbds.execution.test.ts
