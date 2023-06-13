@@ -13,6 +13,8 @@ This tool works with [Tiled Map Editor](https://www.mapeditor.org/) and [The Lev
 
 - --gbdk 
 - --rgbds
+- --gbdk-home <path-to-gbdk>
+- --rgbds-home <path-to-rgbds>
 - --tiled <tiled-tmx-file>
 - --ldtk <ldtk-file>
 - -d <directory>, --output-dir <directory>

@@ -24,8 +24,8 @@ CSOURCES   = $(wildcard gen/*.c)
 all: run-gbdk-tiled run-gbdk-ldtk
 
 prepare: 
-	mkdir gen
-	mkdir obj
+	mkdir -p gen
+	mkdir -p obj
 
 
 png2asset-gbdk-tiled: prepare

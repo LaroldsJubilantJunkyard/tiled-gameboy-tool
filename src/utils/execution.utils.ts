@@ -17,6 +17,8 @@ export const getDefaultExecutionData = (processArguments:string[]):ExecutionData
         objectGroups: [],
         levels: [],
         ldtkWorld:null,
+        gbdkHome:null,
+        rgbdsHome:null,
         embedObjectsInTilemap:false,
         tiledTMXFileData:null,
         enableObjects:false,

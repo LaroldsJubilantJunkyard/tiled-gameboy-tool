@@ -26,6 +26,8 @@ describe('execution utilities',()=>{
             objectGroups: [],
             enableObjects:false,
             levels:[],
+            gbdkHome:null,
+            rgbdsHome:null,
             ldtkWorld:null,
             embedObjectsInTilemap:false,
             tiledTMXFileData:null,

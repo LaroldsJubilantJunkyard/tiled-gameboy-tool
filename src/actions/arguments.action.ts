@@ -59,6 +59,12 @@ export const readProcessArguments = async (executionData: ExecutionData) => {
     } else if (arg == "-sm" || arg == "--export-solid-map") {
       // Add the solid map feature
       executionData.enableSolidMap = true;
+    } else if (arg == "--gbdk-home") {
+      // Set the location of the gbdk
+      executionData.gbdkHome = executionData.processArguments[++i];
+    }  else if (arg == "--rgbds-home") {
+      // Set the location of the rgbds
+      executionData.rgbdsHome = executionData.processArguments[++i];
     } else if (arg == "--gbdk"||arg == "--rgbds") {
       // Set the export type
       executionData.exportType = arg.substring(2);

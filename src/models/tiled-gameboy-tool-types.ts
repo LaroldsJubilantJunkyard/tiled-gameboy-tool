@@ -53,6 +53,8 @@ export interface ExecutionData{
     tilesets:ITiledTileset[];
     levels:ExecutionDataLevel[];
     objectStrings:ObjectString[];
+    gbdkHome:string|null;
+    rgbdsHome:string|null;
     embedObjectsInTilemap:boolean;
     objectGroups:ITiledMapObjectGroup[];
     features:Features[]
