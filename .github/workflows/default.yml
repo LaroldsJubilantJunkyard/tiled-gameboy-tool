@@ -27,6 +27,7 @@ jobs:
           cd rgbds
           curl -Lo rgbds-0.6.1.tar.gz https://github.com/gbdev/rgbds/releases/download/v0.6.1/rgbds-0.6.1.tar.gz
           tar xvfz rgbds-0.6.1.tar.gz
+          make install
           ls
           cd ../
           echo $PATH
