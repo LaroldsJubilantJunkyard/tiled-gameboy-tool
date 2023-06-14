@@ -32,6 +32,7 @@ jobs:
         run: |
           sudo make install
           ls /usr/local/
+          echo "$PATH"
 
       - name: Remove rgbds
         run: |
