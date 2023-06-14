@@ -42,6 +42,9 @@ jobs:
           npm install -g pkg
           npm install
 
+          # skip the unit tests, and perform execution tests
+          export GBDK_HOME=`pwd`/gbdk/
+
           # skip the execution tests, and perform unit tests
           npm test -- --testPathIgnorePatterns /src/tests/execution/ --testPathIgnorePatterns /build/ --testPathIgnorePatterns /node_modules/
 
@@ -54,7 +57,5 @@ jobs:
           # Build the code and and package the application
           npm run build:package
 
-          # skip the unit tests, and perform execution tests
-          export GBDK_HOME=`pwd`/gbdk/
           npm test -- src/tests/execution/gbdk/gbdk.execution.test.ts
           npm test -- src/tests/execution/rgbds/rgbds.execution.test.ts
