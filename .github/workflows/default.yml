@@ -21,10 +21,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install rgbds
-        working-directory: rgbds
         run: |
+          mkdir rgbds
+          export PATH=`pwd`/rgbds:$PATH
+          cd rgbds
           curl -Lo rgbds-0.6.1.tar.gz https://github.com/gbdev/rgbds/releases/download/v0.6.1/rgbds-0.6.1.tar.gz
           tar xvfz rgbds-0.6.1.tar.gz
+          cd ../
 
       # ==== OS Specific Dependencies ====
       - name: Linux Depends
