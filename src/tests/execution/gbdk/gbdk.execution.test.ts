@@ -5,7 +5,7 @@ import {resolve} from 'path'
 beforeEach(() => {
 
     // Create out directory if neccessary
-    if(!existsSync(resolve(process.cwd(),"gen")))mkdirSync(resolve(process.cwd(),"gen"));
+    mkdirSync(resolve(process.cwd(),"gen"),{ recursive: true });
   });
 
 afterEach(() => {

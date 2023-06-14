@@ -8,6 +8,9 @@ GENDIR      = gen
 RESDIR      = res
 DISTDIR     = dist
 
+
+RGBDS_LOCATION = ""
+
 GAMEBOY_TILEMAP_TOOL = ../../../../dist/$(EXECUTION_PLATFORM)/tiled-gameboy-tool 
 
 # You can set the name of the .gb ROM file here
@@ -31,10 +34,10 @@ compile.bat: Makefile
 
 # Compile and link all source files in a single call to LCC
 run-rgbds-tiled: rgbgfx-rgbds
-	rgbasm -L -o $(OBJDIR)/main.o $(SRCDIR)/main.asm
-	rgbasm -L -o $(OBJDIR)/World1Area1_RGBDS.o $(GENDIR)/World1Area1_RGBDS.asm
-	rgblink -o $(DISTDIR)/$(BINS) $(OBJDIR)/main.o $(OBJDIR)/World1Area1_RGBDS.o
-	rgbfix -v -p 0xFF $(DISTDIR)/$(BINS)
+	$(RGBDS_LOCATION)rgbasm -L -o $(OBJDIR)/main.o $(SRCDIR)/main.asm
+	$(RGBDS_LOCATION)rgbasm -L -o $(OBJDIR)/World1Area1_RGBDS.o $(GENDIR)/World1Area1_RGBDS.asm
+	$(RGBDS_LOCATION)rgblink -o $(DISTDIR)/$(BINS) $(OBJDIR)/main.o $(OBJDIR)/World1Area1_RGBDS.o
+	$(RGBDS_LOCATION)rgbfix -v -p 0xFF $(DISTDIR)/$(BINS)
 clean:
 	rm -f  $(GENDIR)/*.*
 	rm -f  $(OBJDIR)/*.*

@@ -31,10 +31,6 @@ jobs:
         working-directory: rgbds
         run: |
           sudo make install
-          ls /usr/local/
-          echo "user local bin rgb"
-          ls /usr/local/bin/rgb*
-          echo "$PATH"
 
       - name: Remove rgbds
         run: |

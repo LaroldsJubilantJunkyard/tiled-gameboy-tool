@@ -22,14 +22,14 @@ describe('rgbds execution tests',()=>{
 
     test.onLinux('linux executable exists',async ()=>{
 
-        execSync("make run-rgbds-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
+        execSync("make run-rgbds-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux","RGBDS_LOCATION":"/usr/local/bin/"}})
 
         expect(existsSync(resolve(__dirname,"..","..","..","..","dist","linux","tiled-gameboy-tool"))).toBeTruthy();
     })
 
     test.onLinux('linux tiled export creates proper files',async ()=>{
 
-        execSync("make run-rgbds-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
+        execSync("make run-rgbds-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux","RGBDS_LOCATION":"/usr/local/bin/"}})
 
         expect(existsSync(resolve(__dirname,"dist","rgbds-tiled-rom.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","world1area1_rgbds.asm"))).toBeTruthy();
@@ -40,7 +40,7 @@ describe('rgbds execution tests',()=>{
 
     test.skip('linux ldtk export creates proper files',async ()=>{
 
-        execSync("make run-rgbds-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
+        execSync("make run-rgbds-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux","RGBDS_LOCATION":"/usr/local/bin/"}})
 
         /*
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
