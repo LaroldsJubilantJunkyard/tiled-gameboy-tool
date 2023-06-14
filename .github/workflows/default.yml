@@ -27,6 +27,15 @@ jobs:
           ref: v0.6.1
           repository: gbdev/rgbds
 
+      - name: Install rgbds
+        working-directory: rgbds
+        run: |
+          sudo make install
+
+      - name: Remove rgbds
+        run: |
+          rm -rf rgbds
+
       # ==== OS Specific Dependencies ====
       - name: Linux Depends
         if: matrix.name == 'Linux-x64'
