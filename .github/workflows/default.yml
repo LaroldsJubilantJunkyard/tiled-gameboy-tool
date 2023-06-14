@@ -20,20 +20,22 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install rgbds
-        run: |
-          mkdir rgbds
-          export PATH=`pwd`/rgbds/rgbds:$PATH
-          cd rgbds
-          curl -Lo rgbds-0.6.1.tar.gz https://github.com/gbdev/rgbds/releases/download/v0.6.1/rgbds-0.6.1.tar.gz
-          tar xfz rgbds-0.6.1.tar.gz
-          cd rgbds
-          echo "$PWD"
-          ls
-          make install
-          cd ../
-          echo $PATH
+      - name: Checkout rgbds
+        uses: actions/checkout@master
+        with:
+          path: rgbds
+          ref: v0.6.1
+          repository: gbdev/rgbds
 
+      - name: Install rgbds
+        working-directory: rgbds
+        run: |
+          sudo make install
+
+      - name: Remove rgbds
+        run: |
+          rm -rf rgbds
+          
       # ==== OS Specific Dependencies ====
       - name: Linux Depends
         if: matrix.name == 'Linux-x64'
