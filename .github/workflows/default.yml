@@ -23,10 +23,11 @@ jobs:
       - name: Install rgbds
         run: |
           mkdir rgbds
-          export PATH=`pwd`/rgbds:$PATH
+          export PATH=`pwd`/rgbds/rgbds:$PATH
           cd rgbds
           curl -Lo rgbds-0.6.1.tar.gz https://github.com/gbdev/rgbds/releases/download/v0.6.1/rgbds-0.6.1.tar.gz
           tar xfz rgbds-0.6.1.tar.gz
+          cd rgbds
           echo "$PWD"
           ls
           make install
