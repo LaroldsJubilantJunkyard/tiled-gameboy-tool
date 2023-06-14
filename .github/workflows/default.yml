@@ -11,47 +11,50 @@ jobs:
     runs-on: ${{matrix.os}}
 
     strategy:
-      matrix:
+      matrix:       
         node-version: [14.x, 16.x, 18.x]
-        os: [macos-latest,ubuntu-latest]
+        include:
+          - os: ubuntu-20.04
+            name: Linux-x64
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    # ==== OS Specific Dependencies ====
-    - name: Linux Depends
-      run: |
-        # Pull in GBDK-2020 4.1.0
-        curl -Lo gbdk-linux64.tar.gz https://github.com/gbdk-2020/gbdk-2020/releases/download/4.1.1/gbdk-linux64.tar.gz
-        tar xvfz gbdk-linux64.tar.gz
-        export GBDK_HOME=`pwd`/gbdk/
+      # ==== OS Specific Dependencies ====
+      - name: Linux Depends
+        if: matrix.name == 'Linux-x64'
+        run: |
+          # Pull in GBDK-2020 4.1.0
+          curl -Lo gbdk-linux64.tar.gz https://github.com/gbdk-2020/gbdk-2020/releases/download/4.1.1/gbdk-linux64.tar.gz
+          tar xvfz gbdk-linux64.tar.gz
+          export GBDK_HOME=`pwd`/gbdk/
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Build
-      run: |
+      - name: Build
+        run: |
 
-        # make sure pkg is installed
-        # pkg can be found here: https://www.npmjs.com/pkg
-        npm install -g pkg
-        npm install
+          # make sure pkg is installed
+          # pkg can be found here: https://www.npmjs.com/pkg
+          npm install -g pkg
+          npm install
 
-        # skip the execution tests, and perform unit tests
-        npm test -- --testPathIgnorePatterns /src/tests/execution/ --testPathIgnorePatterns /build/ --testPathIgnorePatterns /node_modules/
+          # skip the execution tests, and perform unit tests
+          npm test -- --testPathIgnorePatterns /src/tests/execution/ --testPathIgnorePatterns /build/ --testPathIgnorePatterns /node_modules/
 
-        # Make sure we have 'dist' folders for our versions
-        mkdir dist
-        mkdir dist/windows
-        mkdir dist/linux
-        mkdir dist/macos
+          # Make sure we have 'dist' folders for our versions
+          mkdir dist
+          mkdir dist/windows
+          mkdir dist/linux
+          mkdir dist/macos
 
-        # Build the code and and package the application
-        npm run build:package
+          # Build the code and and package the application
+          npm run build:package
 
-        # skip the unit tests, and perform execution tests
-        export GBDK_HOME=`pwd`/gbdk/
-        npm test -- src/tests/execution/gbdk/gbdk.execution.test.ts
-        npm test -- src/tests/execution/rgbds/rgbds.execution.test.ts
+          # skip the unit tests, and perform execution tests
+          export GBDK_HOME=`pwd`/gbdk/
+          npm test -- src/tests/execution/gbdk/gbdk.execution.test.ts
+          npm test -- src/tests/execution/rgbds/rgbds.execution.test.ts

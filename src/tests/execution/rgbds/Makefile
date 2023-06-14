@@ -42,6 +42,4 @@ clean:
 
 # create necessary directories after Makefile is parsed but before build
 # info prevents the command from being pasted into the makefile
-ifneq ($(strip $(EXT)),)           # Only make the directories if EXT has been set by a target
 $(info $(shell mkdir -p $(MKDIRS)))
-endif
