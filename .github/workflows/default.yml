@@ -31,11 +31,12 @@ jobs:
         working-directory: rgbds
         run: |
           sudo make install
+          ls /usr/local/
 
       - name: Remove rgbds
         run: |
           rm -rf rgbds
-          
+
       # ==== OS Specific Dependencies ====
       - name: Linux Depends
         if: matrix.name == 'Linux-x64'
