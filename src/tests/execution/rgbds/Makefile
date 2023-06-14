@@ -15,15 +15,12 @@ PROJECTNAME    = rgbds-tiled-rom
 
 BINS	    = $(PROJECTNAME).gb
 
-all: prepare run-rgbds-tiled
+MKDIRS      = $(OBJDIR) $(GENDIR) $(DISTDIR) $(RESDIR) # See bottom of Makefile for directory auto-creation
 
-prepare: 
-	mkdir -p $(GENDIR)
-	mkdir -p $(OBJDIR)
-	mkdir -p $(DISTDIR)
+all: run-rgbds-tiled
 
 
-rgbgfx-rgbds: prepare
+rgbgfx-rgbds: 
 	rgbgfx -o $(GENDIR)/World1Tileset.2bpp  $(RESDIR)/World1Tileset.png
 	rgbgfx -o $(GENDIR)/Enemies.2bpp  $(RESDIR)/Enemies.png
 	$(GAMEBOY_TILEMAP_TOOL) --rgbds --tiled $(RESDIR)/World1Area1_RGBDS.tmx --output-dir $(GENDIR) --export-objects
@@ -43,5 +40,8 @@ clean:
 	rm -f  $(OBJDIR)/*.*
 	rm -f  $(DISTDIR)/*.*
 
-
-
+# create necessary directories after Makefile is parsed but before build
+# info prevents the command from being pasted into the makefile
+ifneq ($(strip $(EXT)),)           # Only make the directories if EXT has been set by a target
+$(info $(shell mkdir -p $(MKDIRS)))
+endif

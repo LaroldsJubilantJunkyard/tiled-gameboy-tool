@@ -32,18 +32,18 @@ DISTDIR     = dist
 BINS	    = $(PROJECTNAME).gb
 CSOURCES   = $(wildcard gen/*.c)
 
-all: prepare run-gbdk-tiled run-gbdk-ldtk
 
-prepare: 
-	mkdir -p $(GENDIR)
-	mkdir -p $(OBJDIR)
+MKDIRS      = $(OBJDIR) $(GENDIR) $(DISTDIR) $(RESDIR) # See bottom of Makefile for directory auto-creation
 
-png2asset-gbdk-tiled: prepare
+all: run-gbdk-tiled run-gbdk-ldtk
+
+
+png2asset-gbdk-tiled: 
 	$(PNG2ASSET) $(RESDIR)/World1Tileset.png -c $(GENDIR)/World1Tileset.c -map -noflip
 	$(PNG2ASSET) $(RESDIR)/Enemies.png -c $(GENDIR)/Enemies.c -sh 16 -sw 18
 	$(GAMEBOY_TILEMAP_TOOL) --gbdk --tiled $(RESDIR)/World1Area1.tmx --output-dir $(GENDIR) --export-objects
 
-png2asset-gbdk-ldtk: prepare
+png2asset-gbdk-ldtk: 
 	$(PNG2ASSET) $(RESDIR)/World1Tileset.png -c $(GENDIR)/World1Tileset.c -map -noflip
 	$(PNG2ASSET) $(RESDIR)/Enemies.png -c $(GENDIR)/Enemies.c -sh 16 -sw 18
 	$(GAMEBOY_TILEMAP_TOOL) --gbdk --ldtk $(RESDIR)/ldtk-test-project.ldtk --output-dir $(GENDIR) --export-objects
@@ -64,3 +64,8 @@ clean:
 	rm -f  $(GENDIR)/*.*
 	rm -f  $(OBJDIR)/*.*
 
+# create necessary directories after Makefile is parsed but before build
+# info prevents the command from being pasted into the makefile
+ifneq ($(strip $(EXT)),)           # Only make the directories if EXT has been set by a target
+$(info $(shell mkdir -p $(MKDIRS)))
+endif
