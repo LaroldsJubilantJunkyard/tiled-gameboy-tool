@@ -22,14 +22,14 @@ describe('gbdk execution tests',()=>{
 
     test.onLinux('linux executable exists',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"..","..","..","..","dist","linux","tiled-gameboy-tool"))).toBeTruthy();
     })
 
     test.onLinux('linux tiled export creates proper files',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -42,7 +42,7 @@ describe('gbdk execution tests',()=>{
 
     test.skip('linux ldtk export creates proper files',async ()=>{
 
-        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux"}})
+        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"linux","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -55,14 +55,14 @@ describe('gbdk execution tests',()=>{
 
     test.onWindows('windows executable exists',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows"}})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"..","..","..","..","dist","windows","tiled-gameboy-tool.exe"))).toBeTruthy();
     })
 
     test.onWindows('windows tiled export creates proper files',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows"}})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -75,7 +75,7 @@ describe('gbdk execution tests',()=>{
 
     test.skip('windows ldtk export creates proper files',async ()=>{
 
-        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows"}})
+        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"windows","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -88,7 +88,7 @@ describe('gbdk execution tests',()=>{
 
     test.onMac('macos executable exists',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos"}})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"..","..","..","..","dist","macos","tiled-gameboy-tool"))).toBeTruthy();
     })
@@ -96,7 +96,7 @@ describe('gbdk execution tests',()=>{
 
     test.onMac('macos tiled export creates proper files',async ()=>{
 
-        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos"}})
+        execSync("make run-gbdk-tiled",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
@@ -109,7 +109,7 @@ describe('gbdk execution tests',()=>{
 
     test.skip('macos ldtk export creates proper files',async ()=>{
 
-        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos"}})
+        execSync("make run-gbdk-ldtk",{cwd:__dirname,env:{"EXECUTION_PLATFORM":"macos","GBDK_HOME":process.env.GBDK_HOME}})
 
         expect(existsSync(resolve(__dirname,"obj","Example.gb"))).toBeTruthy();
         expect(existsSync(resolve(__dirname,"gen","Enemies.c"))).toBeTruthy();
