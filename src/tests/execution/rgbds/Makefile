@@ -8,9 +8,6 @@ GENDIR      = gen
 RESDIR      = res
 DISTDIR     = dist
 
-
-RGBDS_LOCATION = ""
-
 GAMEBOY_TILEMAP_TOOL = ../../../../dist/$(EXECUTION_PLATFORM)/tiled-gameboy-tool 
 
 # You can set the name of the .gb ROM file here
