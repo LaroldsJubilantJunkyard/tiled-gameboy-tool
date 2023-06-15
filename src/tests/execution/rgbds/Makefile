@@ -21,8 +21,8 @@ all: run-rgbds-tiled
 
 
 rgbgfx-rgbds: 
-	rgbgfx -o $(GENDIR)/World1Tileset.2bpp  $(RESDIR)/World1Tileset.png
-	rgbgfx -o $(GENDIR)/Enemies.2bpp  $(RESDIR)/Enemies.png
+	$(RGBDS_LOCATION)rgbgfx -o $(GENDIR)/World1Tileset.2bpp  $(RESDIR)/World1Tileset.png
+	$(RGBDS_LOCATION)rgbgfx -o $(GENDIR)/Enemies.2bpp  $(RESDIR)/Enemies.png
 	$(GAMEBOY_TILEMAP_TOOL) --rgbds --tiled $(RESDIR)/World1Area1_RGBDS.tmx --output-dir $(GENDIR) --export-objects
 
 compile.bat: Makefile
