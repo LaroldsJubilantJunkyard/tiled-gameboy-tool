@@ -32,8 +32,8 @@ compile.bat: Makefile
 # Compile and link all source files in a single call to LCC
 run-rgbds-tiled: rgbgfx-rgbds
 	$(RGBDS_LOCATION)rgbasm -L -o $(OBJDIR)/main.o $(SRCDIR)/main.asm
-	$(RGBDS_LOCATION)rgbasm -L -o $(OBJDIR)/World1Area1_RGBDS.o $(GENDIR)/world1area1_rgbds.asm
-	$(RGBDS_LOCATION)rgblink -o $(DISTDIR)/$(BINS) $(OBJDIR)/main.o $(OBJDIR)/World1Area1_RGBDS.o
+	$(RGBDS_LOCATION)rgbasm -L -o $(OBJDIR)/world1area1_rgbds.o $(GENDIR)/world1area1_rgbds.asm
+	$(RGBDS_LOCATION)rgblink -o $(DISTDIR)/$(BINS) $(OBJDIR)/main.o $(OBJDIR)/world1area1_rgbds.o
 	$(RGBDS_LOCATION)rgbfix -v -p 0xFF $(DISTDIR)/$(BINS)
 clean:
 	rm -f  $(GENDIR)/*.*
