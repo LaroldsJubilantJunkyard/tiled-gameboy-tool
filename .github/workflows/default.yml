@@ -73,6 +73,8 @@ jobs:
           npm test -- src/tests/execution/gbdk/gbdk.execution.test.ts
           npm test -- src/tests/execution/rgbds/rgbds.execution.test.ts
 
+          # delete the node modules folder before we upload the artifacts
+          rm -rf node_modules
           
     
       - name: Upload Artifacts
