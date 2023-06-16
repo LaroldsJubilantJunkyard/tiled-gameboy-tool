@@ -1,8 +1,10 @@
 name: Default Github Action
 
 on:
-  push:
-    branches: [ "develop" ]
+  pull_request:
+    branches: [ "master" ]
+
+
 jobs:
   build:
     runs-on: ${{matrix.os}}
@@ -72,11 +74,10 @@ jobs:
 
           npm test -- src/tests/execution/gbdk/gbdk.execution.test.ts
           npm test -- src/tests/execution/rgbds/rgbds.execution.test.ts
-
-          
     
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with: 
           name: assets-for-download
           path: dist
+

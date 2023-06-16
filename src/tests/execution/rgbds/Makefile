@@ -19,7 +19,6 @@ MKDIRS      = $(OBJDIR) $(GENDIR) $(DISTDIR) $(RESDIR) # See bottom of Makefile 
 
 all: run-rgbds-tiled
 
-
 rgbgfx-rgbds: 
 	$(RGBDS_LOCATION)rgbgfx -o $(GENDIR)/World1Tileset.2bpp  $(RESDIR)/World1Tileset.png
 	$(RGBDS_LOCATION)rgbgfx -o $(GENDIR)/Enemies.2bpp  $(RESDIR)/Enemies.png
