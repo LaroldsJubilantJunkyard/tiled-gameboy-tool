@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="77" height="18" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="14">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="77" height="18" tilewidth="8" tileheight="8" infinite="0" nextlayerid="6" nextobjectid="21">
  <editorsettings>
   <export target="../../source/main/default/levels/World1Area1.c" format="gbdk-export"/>
  </editorsettings>
@@ -61,54 +61,15 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="6" gid="29" x="569.75" y="115.75" width="8" height="8">
+  <object id="14" name="Goomba 1" gid="30" x="85.5" y="48" width="8" height="8"/>
+  <object id="15" gid="30" x="129.5" y="61" width="8" height="8"/>
+  <object id="16" gid="30" x="93" y="124" width="8" height="8"/>
+  <object id="17" gid="30" x="124.5" y="33" width="8" height="8"/>
+  <object id="18" gid="30" x="27" y="30.5" width="8" height="8"/>
+  <object id="19" gid="30" x="27.5" y="30.5" width="8" height="8"/>
+  <object id="20" gid="30" x="44" y="118.5" width="8" height="8">
    <properties>
-    <property name="gbdk_type" value="GOOMBA_OBJECT_TYPE"/>
-   </properties>
-  </object>
-  <object id="7" gid="29" x="464.25" y="113.25" width="8" height="8">
-   <properties>
-    <property name="gbdk_type" value="GOOMBA_OBJECT_TYPE"/>
-   </properties>
-  </object>
-  <object id="8" name="dest" gid="1073741853" x="418.221" y="79.75" width="8" height="8">
-   <properties>
-    <property name="gbdk_type" value="GOOMBA_OBJECT_TYPE"/>
-   </properties>
-  </object>
-  <object id="9" gid="29" x="296" y="96.5" width="8" height="8">
-   <properties>
-    <property name="gbdk_type" value="1"/>
-   </properties>
-  </object>
-  <object id="10" gid="29" x="232.167" y="97.9167" width="8" height="8">
-   <properties>
-    <property name="gbdk.size" value="large"/>
-    <property name="gbdk.type" value="1"/>
-    <property name="gbdkExport" value="true"/>
-   </properties>
-  </object>
-  <object id="11" gid="29" x="156" y="120" width="8" height="10">
-   <properties>
-    <property name="gbdk.size" value="large"/>
-    <property name="gbdk.type" value="1"/>
-    <property name="gbdkExport" value="true"/>
-   </properties>
-  </object>
-  <object id="12" name="OnBlockGoomba" gid="29" x="110.581" y="66.6047" width="8" height="10.3333">
-   <properties>
-    <property name="gbdk.size" value="large"/>
-    <property name="gbdk.type" value="1"/>
-    <property name="gbdkExport" value="true"/>
-    <property name="gbdkString.dialogue" value="Nice view up here, on these blocks!"/>
-   </properties>
-  </object>
-  <object id="13" gid="29" x="108.667" y="122.167" width="8" height="10.3333">
-   <properties>
-    <property name="gbdk.size" value="large"/>
-    <property name="gbdk.type" value="1"/>
-    <property name="gbdkExport" value="true"/>
-    <property name="gbdkString.dialogue" value="I'm a goomba! GOOMBA! GOOMBA! GOOMBA!"/>
+    <property name="gbdkString.dialogue" value="test steting"/>
    </properties>
   </object>
  </objectgroup>

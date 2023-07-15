@@ -1,5 +1,5 @@
 
-import { ExecutionData, ExportListItem } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, ExecutionDataLevel, ExportListItem } from "../models/tiled-gameboy-tool-types";
 import fs from 'fs'
 import {sep} from 'path'
 import { getRGBDSExport } from "../utils/export/tilemap/rgbds-tilemap.export.utils";
@@ -10,31 +10,31 @@ import { getGBDKSolidMapExports } from "../utils/export/solid-map/gbdk-solid-map
 import { getRGBDSSolidMapExports } from "../utils/export/solid-map/rgbds-solid-map.export.utils";
 import { removeDoubleLineBreaks } from "../utils/string.utils";
 
-const getGBDKDefualtExportList = (executionData:ExecutionData):ExportListItem[]=>{
+const getGBDKDefualtExportList = (executionData:ExecutionData,executionDataLevel:ExecutionDataLevel):ExportListItem[]=>{
 
     
     // GBDK will need two files, a .c file and a .h file
     return [
         {
             // Define a c file
-            file: `${ executionData.outputDirectory + sep + executionData.identifier }.c`,
+            file: `${ executionData.outputDirectory + sep + executionDataLevel.identifier }.c`,
             extension:"c",
             contents:[],
         },
         {
             // Define a header file
-            file: `${ executionData.outputDirectory + sep + executionData.identifier }.h`,
+            file: `${ executionData.outputDirectory + sep + executionDataLevel.identifier }.h`,
             extension:"h",
             contents: [],
         },
     ];
 }
 
-export const getRGBDSDefaultExportList =(executionData:ExecutionData):ExportListItem[]=>{
+export const getRGBDSDefaultExportList =(executionData:ExecutionData,executionDataLevel:ExecutionDataLevel):ExportListItem[]=>{
     return [
         {
             // Define a single .asm file
-            file: `${ executionData.outputDirectory + sep + executionData.identifier }.asm`,
+            file: `${ executionData.outputDirectory + sep + executionDataLevel.identifier }.asm`,
             extension:"asm",
             contents:[],
         }
@@ -43,50 +43,56 @@ export const getRGBDSDefaultExportList =(executionData:ExecutionData):ExportList
 
 export const exportExecutionData = (executionData:ExecutionData)=>{
 
-    var exportList:ExportListItem[] = [];
-    
-    // Use the proper export action
-    switch(executionData.exportType){
-        case "gbdk":  exportList = getGBDKDefualtExportList(executionData); break;
-        case "rgbds":  exportList = getRGBDSDefaultExportList(executionData); break;
-        default:break;
-    }
+    console.log(`Exporting ${executionData.levels.length} Levels at: ${executionData.outputDirectory}`)
 
-    // Use the proper export action
-    switch(executionData.exportType){
-        case "gbdk": getGBDKExport(executionData,exportList);break;
-        case "rgbds": getRGBDSExport(executionData,exportList);break;
-        default:break;
-    }
+    executionData.levels.forEach(executionDataLevel=>{
 
-    // If object's are enabled
-    // This can be done via the --export-objects argument
-    if(executionData.enableObjects){
-        switch(executionData.exportType){
-            case "gbdk": getGBDKObjectExport(executionData,exportList);break;
-            case "rgbds": getRGBDSObjectExport(executionData,exportList);break;
-            default:break;
-        }
-    }
-    // If solid map's are enabled
-    // This can be done via the --export-solid-map argument
-    if(executionData.enableSolidMap){
-        switch(executionData.exportType){
-            case "gbdk": getGBDKSolidMapExports(executionData,exportList);break;
-            case "rgbds": getRGBDSSolidMapExports(executionData,exportList);break;
-            default:break;
-        }
-    }
+        var exportList:ExportListItem[] = [];
+        
+            // Use the proper export action
+            switch(executionData.exportType){
+                case "gbdk":  exportList = getGBDKDefualtExportList(executionData,executionDataLevel); break;
+                case "rgbds":  exportList = getRGBDSDefaultExportList(executionData,executionDataLevel); break;
+                default:break;
+            }
+
+            // Use the proper export action
+            switch(executionData.exportType){
+                case "gbdk": getGBDKExport(executionData,executionDataLevel,exportList);break;
+                case "rgbds": getRGBDSExport(executionData,executionDataLevel,exportList);break;
+                default:break;
+            }
+
+            // If object's are enabled
+            // This can be done via the --export-objects argument
+            if(executionData.enableObjects){
+                switch(executionData.exportType){
+                    case "gbdk": getGBDKObjectExport(executionData,executionDataLevel,exportList);break;
+                    case "rgbds": getRGBDSObjectExport(executionData,executionDataLevel,exportList);break;
+                    default:break;
+                }
+            }
+            // If solid map's are enabled
+            // This can be done via the --export-solid-map argument
+            if(executionData.enableSolidMap){
+                switch(executionData.exportType){
+                    case "gbdk": getGBDKSolidMapExports(executionData,executionDataLevel,exportList);break;
+                    case "rgbds": getRGBDSSolidMapExports(executionData,executionDataLevel,exportList);break;
+                    default:break;
+                }
+            }
 
 
-    // Export each of the files provided
-    exportList.forEach((exportItem:ExportListItem)=>{
 
-        // Merge all the contents
-        // Remove extra line breaks
-        const finalString = removeDoubleLineBreaks(exportItem.contents.join("\n"))
-       
-        fs.writeFileSync(exportItem.file,finalString);
-    })
+            // Export each of the files provided
+            exportList.forEach((exportItem:ExportListItem)=>{
+
+                // Merge all the contents
+                // Remove extra line breaks
+                const finalString = removeDoubleLineBreaks(exportItem.contents.join("\n"))
+            
+                fs.writeFileSync(exportItem.file,finalString);
+            })
+        })
 
 }

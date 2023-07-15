@@ -1,4 +1,5 @@
-import { IAllTilesData, ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-types";
+import { LDtk, World } from "ldtk";
+import { IAllTilesData, ITiledFileData, ITiledMapLayer, ITiledMapObjectGroup, ITiledTileset } from "./tiled-types";
 
 export interface FinalItems{
     index:number;
@@ -24,22 +25,39 @@ export interface ExportListItem{
     extension:string;
     contents:(string)[];
 }
-
+export interface ExportObject{
+    x:number;
+    y:number;
+    id:number;
+    tileIndex:number;
+    customData:any;
+}
 export enum InputFileFormat {None,Tiled, LDtk}
 
-export interface ExecutionData{
+export interface ExecutionDataLevel{
+
     finalItems:FinalItems[];
-    inputFileFormat:InputFileFormat;
-    processArguments:string[];
-    tilesets:ITiledTileset[];
-    solidMap:number[];
     tilemapAttributes:number[];
-    objectStrings:ObjectString[]
-    totalObjects:any[];
-    objectGroups:ITiledMapObjectGroup[];
-    features:Features[]
+    solidMap:number[];
+    identifier:string;
+    totalObjects:ExportObject[];
     mapWidth:number;
     mapHeight:number
+}
+
+export interface ExecutionData{
+    inputFileFormat:InputFileFormat;
+    tiledTMXFileData:ITiledFileData|null;
+    processArguments:string[];
+    ldtkWorld: LDtk.World|null
+    tilesets:ITiledTileset[];
+    levels:ExecutionDataLevel[];
+    objectStrings:ObjectString[];
+    gbdkHome:string|null;
+    rgbdsHome:string|null;
+    embedObjectsInTilemap:boolean;
+    objectGroups:ITiledMapObjectGroup[];
+    features:Features[]
     enableSolidMap:boolean;
     identifier:string;
     offset:number;

@@ -1,11 +1,21 @@
 import {sep,basename,extname} from 'path'
 import { getAbsoluteUrl } from './file.utils';
 
+/**
+ * This function generates a c-safe identifier from the passed in filename. Removing any characters that aren't supported
+ * @param str An input filename 
+ * @returns A alphanumeric (+ underscore) lowercase string
+ */
 export const getIdentifierForFile = (file:string):string=>{
 
+    // Make sure the file is absolute
     file = getAbsoluteUrl(file);
 
-    return getIdentifierForString(basename(file,extname(file)))
+    // Get the base name, without the extension
+    const fileBaseName = basename(file,extname(file))
+
+    // Get the identifier for the base name
+    return getIdentifierForString(fileBaseName);
 }
 
 /**
@@ -36,12 +46,12 @@ export function replaceChar(origString:string, replaceChar:string, index:number)
   }
   
 
-  /**
-   * This functions splits a string by line breaks, and removes extra line breaks. This 
-   * @param str The multi-line string to remove double line breaks from
-   * @returns Returns the original string, minus double-line breaks
-   */
-  export function removeDoubleLineBreaks (str:string){
+/**
+ * This functions splits a string by line breaks, and removes extra line breaks. This 
+ * @param str The multi-line string to remove double line breaks from
+ * @returns Returns the original string, minus double-line breaks
+ */
+export function removeDoubleLineBreaks (str:string){
 
     // Split by line break characters
     const finalStringSplit = str.split("\n")
@@ -63,4 +73,4 @@ export function replaceChar(origString:string, replaceChar:string, index:number)
         finalStringModified.push(finalStringSplit[i])
     }
     return finalStringModified.join("\n").trim();
-  }
+}

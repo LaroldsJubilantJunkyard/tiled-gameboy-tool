@@ -1,4 +1,4 @@
-import { ExecutionData, FinalItems } from "../models/tiled-gameboy-tool-types";
+import { ExecutionData, ExecutionDataLevel, ExportObject, FinalItems } from "../models/tiled-gameboy-tool-types";
 import {
   ITiledFileData,
   ITiledMapObjectGroupObject,
@@ -7,31 +7,40 @@ import {
   ITiledTilesetDataTileProperty,
 } from "../models/tiled-types";
 import { readTiledTMXFile, readTileset } from "../services/tiled.service";
-import { singleItemOrArray } from "../utils/micc.utils";
+import { getColumnAndRow, singleItemOrArray } from "../utils/micc.utils";
 import { replaceChar } from "../utils/string.utils";
+import {resolve} from 'path'
 
 export const processTiledTMXFile = async (executionData: ExecutionData) => {
-  
-  // Read the TMX file
-  var tiledTMXFileData: ITiledFileData = readTiledTMXFile(
-    executionData.inputFile
-  );
 
-  // Get the map size
-  executionData.mapWidth = Number(tiledTMXFileData.map.width);
-  executionData.mapHeight = Number(tiledTMXFileData.map.height);
+  const {tiledTMXFileData} =executionData
+  
+  if(tiledTMXFileData==null)return;
+  
+  var executionDataLevel: ExecutionDataLevel = {
+    finalItems:[],
+    identifier:executionData.identifier,
+    // Get the map size
+    mapWidth:Number(tiledTMXFileData.map.width),
+    mapHeight:Number(tiledTMXFileData.map.height),
+    solidMap:[],
+    tilemapAttributes:[],
+    totalObjects:[]
+  }
 
   // Read the solid maps
-  getSolidMaps(executionData);
+  getSolidMaps(executionData,executionDataLevel);
 
   // Get all of the objects
-  getTotalObjects(tiledTMXFileData, executionData);
+  getTotalObjects(tiledTMXFileData, executionData,executionDataLevel);
 
   // Get the final items from the layers
-  flattenTiledLayers(tiledTMXFileData, executionData);
+  flattenTiledLayers(tiledTMXFileData, executionData,executionDataLevel);
 
   // Get tilemap attributes
-  getTilemapAttributes(executionData);
+  getTilemapAttributes(executionData,executionDataLevel);
+
+  executionData.levels= [executionDataLevel]
 };
 
 export const getTilesets = (
@@ -73,19 +82,18 @@ export const getTilesets = (
 
 export const flattenTiledLayers = (
   tiledTMXFileData: ITiledFileData,
-  executionData: ExecutionData
+  executionData: ExecutionData,
+  executionDataLevel: ExecutionDataLevel
 ) => {
+
   // Get the map layers
   executionData.layers = singleItemOrArray(tiledTMXFileData.map.layer);
 
   const layerIndices: string[] = executionData.layers[0].data.$t.split(",");
 
   var items: FinalItems[] = layerIndices.map((x: string,index:number) => {
-    const mapColumnCount = Math.floor(executionData.mapWidth);
-    const column = (index%mapColumnCount);
-    const row = Math.floor(index/mapColumnCount);
-    const tileIndex:number = column+row*mapColumnCount
-    return { index: Number(x) - 1, tileLayer: 0, attribute: 0,column,row,tileIndex};
+    const {column,row} =  getColumnAndRow(index,executionDataLevel.mapWidth)
+    return { index: Number(x) - 1, tileLayer: 0, attribute: 0,column,row,tileIndex:index};
   });
 
   for (var i = 1; i < executionData.layers.length; i++) {
@@ -139,10 +147,10 @@ export const flattenTiledLayers = (
       2
     );
 
-    var objIndex = executionData.totalObjects.findIndex(y=>y.tileIndex==x.tileIndex);
+    var objIndex = executionDataLevel.totalObjects.findIndex(y=>y.tileIndex==x.tileIndex);
 
-    if(objIndex!=-1 && executionData.enableObjects){
-      console.log(`Placing ${executionData.totalObjects[objIndex]} at ${x.tileIndex}`)
+    if(objIndex!=-1 && executionData.enableObjects && executionData.embedObjectsInTilemap){
+      console.log(`Placing ${executionDataLevel.totalObjects[objIndex]} at ${x.tileIndex}`)
 
       newIndex=(255).toString(2);
       attributeValue=objIndex.toString(2);
@@ -152,10 +160,19 @@ export const flattenTiledLayers = (
     x.index = parseInt(newIndex, 2);
   });
 
-  executionData.finalItems = items;
+  executionDataLevel.finalItems = items;
 };
-const getTilemapAttributes = (executionData: ExecutionData) => {
-  executionData.tilemapAttributes = executionData.finalItems.map((x) => {
+const getTilemapAttributes = (
+  executionData: ExecutionData,
+  executionDataLevel: ExecutionDataLevel) => {
+    executionDataLevel.tilemapAttributes = executionDataLevel.finalItems.map((x,tileIndex) => {
+
+    var objIndex = executionDataLevel.totalObjects.findIndex(y=>y.tileIndex==tileIndex);
+
+    if(objIndex!=-1 && executionData.enableObjects){
+      return objIndex;
+    }
+    
     if(executionData.tilesets[x.tileLayer]==null)return 0;
     if(executionData.tilesets[x.tileLayer].data==null)return 0;
     if(executionData.tilesets[x.tileLayer].data.tileset==null)return 0;
@@ -189,8 +206,11 @@ const getTilemapAttributes = (executionData: ExecutionData) => {
     return isNaN(n) ? 0 : n;
   });
 };
-const getSolidMaps = (executionData: ExecutionData) => {
-  executionData.solidMap = executionData.finalItems.map((x) => {
+const getSolidMaps = (
+  executionData: ExecutionData,
+  executionDataLevel: ExecutionDataLevel
+  ) => {
+    executionDataLevel.solidMap = executionDataLevel.finalItems.map((x) => {
     if(executionData.tilesets[x.tileLayer]==null)return 0;
     if(executionData.tilesets[x.tileLayer].data==null)return 0;
     if(executionData.tilesets[x.tileLayer].data.tileset==null)return 0;
@@ -227,7 +247,8 @@ const getSolidMaps = (executionData: ExecutionData) => {
 
 const getTotalObjects = (
   tiledTMXFileData: ITiledFileData,
-  executionData: ExecutionData
+  executionData: ExecutionData,
+  executionDataLevel: ExecutionDataLevel,
 ) => {
   // Get the object groups
   executionData.objectGroups = singleItemOrArray(
@@ -244,24 +265,26 @@ const getTotalObjects = (
     objects.forEach((object: ITiledMapObjectGroupObject) => {
       const column = Math.floor(Number(object.x)/8);
       const row = Math.floor(Number(object.y)/8);
-      const mapColumnCount = Math.floor(executionData.mapWidth);
-      var data: any = {
+      const mapColumnCount = Math.floor(executionDataLevel.mapWidth);
+      var data: ExportObject = {
         x: Math.floor(Number(object.x)),
         y: Math.floor(Number(object.y)),
         id: Number(object.id),
-        tileIndex:  column+row*mapColumnCount
+        tileIndex:  column+row*mapColumnCount,
+        customData:{}
       };
 
       console.log("object at index: "+data.tileIndex)
 
       // Apply default value to all properties to things
       executionData.objectFields.forEach((field) => {
-        data[field.name] = 0;
+        data.customData[field.name] = 0;
       });
 
       // Check all of the object's properties
-      singleItemOrArray(object.properties.property).forEach(
+      singleItemOrArray(object.properties ? object.properties.property : []).forEach(
         (property: ITiledTilesetDataTileProperty) => {
+
           // If this property was included to be exported
           if (fieldNames.includes(property.name)) {
             var val: any = property.value;
@@ -271,13 +294,13 @@ const getTotalObjects = (
             );
 
             if (field) {
-              data[property.name] = val;
+              data.customData[property.name] = val;
             }
           }
         }
       );
 
-      executionData.totalObjects.push(data);
+      executionDataLevel.totalObjects.push(data);
     });
   });
 };

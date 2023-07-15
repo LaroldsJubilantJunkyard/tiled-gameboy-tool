@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "world1tileset.h": "c",
+        "world1area1.h": "c",
+        "enemies.h": "c"
+    }
+}
